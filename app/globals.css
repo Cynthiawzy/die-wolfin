@@ -1,0 +1,127 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Brand palette */
+  --color-noir: var(--noir);
+  --color-charcoal: var(--charcoal);
+  --color-ash: var(--ash);
+  --color-silver: var(--silver);
+  --color-rose: var(--rose);
+
+  --font-serif: var(--font-playfair), Didot, 'Times New Roman', serif;
+  --font-sans: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-cinzel: var(--font-cinzel), Didot, serif;
+
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+
+  --animate-shimmer: shimmer 3.5s linear infinite;
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+:root {
+  color-scheme: dark;
+
+  /* Brand palette (hex) */
+  --noir: #0b0b0b;
+  --charcoal: #222222;
+  --ash: #555555;
+  --silver: #bfbfbf;
+  --rose: #e0b7c3;
+
+  --background: #0b0b0b;
+  --foreground: #d8d8d8;
+  --card: #121212;
+  --card-foreground: #d8d8d8;
+  --popover: #141414;
+  --popover-foreground: #eaeaea;
+  --primary: #e2d8cd;
+  --primary-foreground: #0b0b0b;
+  --secondary: #222222;
+  --secondary-foreground: #d8d8d8;
+  --muted: #1a1a1a;
+  --muted-foreground: #8a8a8a;
+  --accent: #e0b7c3;
+  --accent-foreground: #0b0b0b;
+  --destructive: #b4443f;
+  --border: rgba(255, 255, 255, 0.09);
+  --input: rgba(255, 255, 255, 0.14);
+  --ring: #e0b7c3;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply bg-background;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    /* Hide native cursor; custom cursor takes over (restored for reduced motion below) */
+  }
+  ::selection {
+    background: var(--rose);
+    color: var(--noir);
+  }
+}
+
+/* Custom cursor: hide default only on precise pointers */
+@media (pointer: fine) {
+  body.wolf-cursor,
+  body.wolf-cursor a,
+  body.wolf-cursor button {
+    cursor: none;
+  }
+}
+
+/* Thin luxury scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--noir);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--charcoal);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ash);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

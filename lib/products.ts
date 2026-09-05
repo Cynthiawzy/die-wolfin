@@ -1,0 +1,236 @@
+export type Category =
+  | 'Clothing'
+  | 'Outerwear'
+  | 'Shoes'
+  | 'Accessories'
+  | 'Beauty'
+
+export type ProductColor = { name: string; hex: string }
+
+export type Product = {
+  id: string
+  name: string
+  category: Category
+  price: number
+  image: string
+  blurb: string
+  description?: string
+  preorder?: boolean
+  sale?: boolean
+  salePrice?: number
+  archive?: boolean
+  sizes?: string[]
+  colors?: ProductColor[]
+}
+
+const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL']
+const SHOE_SIZES = ['36', '37', '38', '39', '40', '41']
+
+export const PRODUCTS: Product[] = [
+  {
+    id: 'moto-jacket',
+    name: 'Rite Leather Moto',
+    category: 'Outerwear',
+    price: 1980,
+    image: '/images/p-moto-jacket.png',
+    blurb: 'Hand-waxed lambskin. Asymmetric zip. Cut to armour the wearer.',
+    description:
+      'Hand-waxed lambskin over a structured canvas underlay, cut close through the shoulder and asymmetric at the zip. Hardware is solid brass, aged before it ever leaves the atelier. Each piece is broken in by hand so it already moves like it has history.',
+    sizes: CLOTHING_SIZES,
+    colors: [
+      { name: 'Noir', hex: '#0c0c0c' },
+      { name: 'Oxblood', hex: '#3d1016' },
+    ],
+  },
+  {
+    id: 'corset',
+    name: 'Vespera Lace Corset',
+    category: 'Clothing',
+    price: 640,
+    image: '/images/p-corset.png',
+    blurb: 'Boned French lace over silk. A whisper of restraint.',
+    description:
+      'French Chantilly lace laid over a silk base, boned in spiral steel for a true waist and an honest line. Hook-and-eye front busk, lace-up back. Built the way archive corsetry was built — to be worn for hours, not photographs.',
+    sizes: CLOTHING_SIZES,
+    colors: [
+      { name: 'Black Lace', hex: '#111014' },
+      { name: 'Bordeaux', hex: '#4a1420' },
+    ],
+  },
+  {
+    id: 'slip-dress',
+    name: 'Nocturne Satin Slip',
+    category: 'Clothing',
+    price: 720,
+    salePrice: 504,
+    sale: true,
+    image: '/images/p-slip-dress.png',
+    blurb: 'Bias-cut liquid satin that pools like ink at the floor.',
+    description:
+      'Cut on the true bias from heavyweight silk satin so it pools rather than clings. Cowl neckline front and back, raw-edge hem left unfinished on purpose. Wears like it was poured on, not put on.',
+    sizes: CLOTHING_SIZES,
+    colors: [
+      { name: 'Noir', hex: '#0b0b0d' },
+      { name: 'Blood Rose', hex: '#5c1b28' },
+    ],
+  },
+  {
+    id: 'fur-coat',
+    name: 'Umbra Shearling Coat',
+    category: 'Outerwear',
+    price: 3450,
+    preorder: true,
+    image: '/images/p-fur-coat.png',
+    blurb: 'Reserved. The winter drop. Yours before it exists.',
+    description:
+      'Full-length curly shearling with a storm collar deep enough to disappear into. Made to order for the winter drop — reserving now secures a piece before the run is cut. Expect six weeks from order to door.',
+    sizes: CLOTHING_SIZES,
+    colors: [
+      { name: 'Onyx', hex: '#111113' },
+      { name: 'Storm Grey', hex: '#4b4b50' },
+    ],
+  },
+  {
+    id: 'leather-pants',
+    name: 'Onyx Leather Trouser',
+    category: 'Clothing',
+    price: 890,
+    image: '/images/p-leather-pants.png',
+    blurb: 'Second-skin nappa. Straight leg. Built to be worn out.',
+    description:
+      'Second-skin nappa leather, straight through the leg with a mid-rise waist. Full seat and knee articulation so it moves rather than fights you. Ages the way good leather should — better every season.',
+    sizes: CLOTHING_SIZES,
+    colors: [
+      { name: 'Noir', hex: '#0c0c0c' },
+      { name: 'Espresso', hex: '#2c1f1a' },
+    ],
+  },
+  {
+    id: 'boots',
+    name: 'Descent Platform Boot',
+    category: 'Shoes',
+    price: 1120,
+    image: '/images/p-boots.png',
+    blurb: 'Six-inch monolith sole. Buckled to the knee.',
+    description:
+      'A six-inch monolith sole under a knee-high shaft, closed with five buckled straps down the outer leg. Full-grain leather upper, steel shank underfoot. Heavy on purpose — it announces you before you enter a room.',
+    sizes: SHOE_SIZES,
+    colors: [
+      { name: 'Black', hex: '#0c0c0c' },
+      { name: 'Oxblood', hex: '#3d1016' },
+    ],
+  },
+  {
+    id: 'studded-bag',
+    name: 'Reliquary Studded Bag',
+    category: 'Accessories',
+    price: 1290,
+    image: '/images/p-studded-bag.png',
+    blurb: 'Cathedral hardware on blackened calf. Carries your secrets.',
+    description:
+      'Blackened calfskin body with cathedral-arch hardware cast in solid brass, each stud set by hand. Structured base, chain-and-leather strap worn short or long. One interior pocket, lined in the same rose as the seal on the box it ships in.',
+    colors: [
+      { name: 'Black', hex: '#0c0c0c' },
+      { name: 'Gunmetal', hex: '#3a3d42' },
+    ],
+  },
+  {
+    id: 'necklace',
+    name: 'Crux Silver Pendant',
+    category: 'Accessories',
+    price: 480,
+    salePrice: 336,
+    sale: true,
+    image: '/images/p-necklace.png',
+    blurb: 'Sterling relic on a heavy chain. Devotion, worn openly.',
+    description:
+      'Sterling silver cross pendant, hand-engraved, on a heavy curb chain long enough to layer or wear alone. Oxidised in the grooves to hold the detail, polished at every raised edge. Comes in a lined reliquary box.',
+    colors: [
+      { name: 'Silver', hex: '#c7c7cc' },
+      { name: 'Blackened Silver', hex: '#4a4a4e' },
+    ],
+  },
+  {
+    id: 'bodysuit',
+    name: 'Seraph Lace Bodysuit',
+    category: 'Clothing',
+    price: 560,
+    image: '/images/p-bodysuit.png',
+    blurb: 'Sheer illusion tulle. For the ones who dare the light.',
+    description:
+      'Sheer illusion tulle body with floral lace appliqué placed by hand. Snap closure at the base, boned front panel for shape without a seam line. Reads as bare from a distance, as couture up close.',
+    sizes: CLOTHING_SIZES,
+    colors: [
+      { name: 'Noir', hex: '#0b0b0d' },
+      { name: 'Nude Illusion', hex: '#8a6a63' },
+    ],
+  },
+  {
+    id: 'mask',
+    name: 'Masque de Nuit',
+    category: 'Accessories',
+    price: 320,
+    archive: true,
+    image: '/images/p-mask.png',
+    blurb: 'Archive. Silk masquerade, hand-stitched. A dozen ever made.',
+    description:
+      'Archive piece. Silk-wrapped masquerade mask, hand-stitched with a single row of jet beading along the brow. A dozen were ever made and none have been remade since. Elastic tie, one size.',
+  },
+  {
+    id: 'gloves',
+    name: 'Vow Opera Gloves',
+    category: 'Accessories',
+    price: 290,
+    archive: true,
+    image: '/images/p-gloves.png',
+    blurb: 'Archive. Elbow-length satin. The final gesture of a look.',
+    description:
+      'Archive piece. Elbow-length satin gloves, finished with a single covered button at the wrist. Kept in the archive as the closing note of the look they were designed for — the last thing you put on.',
+  },
+  {
+    id: 'parfum',
+    name: 'Die Wölfin Eau Noire',
+    category: 'Beauty',
+    price: 210,
+    image: '/images/p-parfum.png',
+    blurb: 'Oud, leather, black rose. A scent that arrives before you.',
+    description:
+      'Oud, worn leather, and black rose over a base of dark amber and smoke. Eau de parfum concentration, 50ml. Built to last from dusk until whatever the night turns into.',
+  },
+]
+
+export type FilterKey =
+  | 'All'
+  | 'Clothing'
+  | 'Outerwear'
+  | 'Shoes'
+  | 'Accessories'
+  | 'Beauty'
+  | 'Archive'
+  | 'Sale'
+
+export const FILTERS: FilterKey[] = [
+  'All',
+  'Clothing',
+  'Outerwear',
+  'Shoes',
+  'Accessories',
+  'Beauty',
+  'Archive',
+  'Sale',
+]
+
+export function filterProducts(products: Product[], filter: FilterKey): Product[] {
+  if (filter === 'All') return products
+  if (filter === 'Archive') return products.filter((p) => p.archive)
+  if (filter === 'Sale') return products.filter((p) => p.sale)
+  return products.filter((p) => p.category === filter)
+}
+
+export function getProduct(id: string): Product | undefined {
+  return PRODUCTS.find((p) => p.id === id)
+}
+
+export function formatPrice(n: number): string {
+  return '$' + n.toLocaleString('en-US')
+}
