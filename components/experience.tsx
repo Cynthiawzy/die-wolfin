@@ -3,7 +3,6 @@
 import { StoreProvider, useStore } from '@/components/store'
 import { CustomCursor } from '@/components/custom-cursor'
 import { SoundToggle } from '@/components/sound-toggle'
-import { DustParticles } from '@/components/dust-particles'
 import { TransitionCurtain } from '@/components/transition-curtain'
 import { SiteNav } from '@/components/site-nav'
 import { CartDrawer } from '@/components/cart-drawer'
@@ -35,7 +34,6 @@ function ViewRouter() {
 export function Experience() {
   return (
     <StoreProvider>
-      <DustParticles />
       <CustomCursor />
       <SoundToggle />
       <SiteNav />

@@ -1,0 +1,367 @@
+/* Hanging-charm category display for the closet page.
+   Class names are "hc-" prefixed since these are plain global CSS rules
+   (imported once here), not Tailwind utilities, and need to stay clear of
+   the rest of the site's class names. */
+
+/* Pink polka-dot overlay for the hero's side walls. The hero background is
+   a photo (closet-bg.png) with its own baked-in wall texture that can't be
+   recolored directly — this lays a rose-toned dot pattern on top of it in
+   the same wall regions instead, faded at the inner edge and top/bottom so
+   it reads as an intentional wash of color rather than a pasted sticker. */
+.hero-wall {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20%;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background-image:
+    radial-gradient(circle at 22% 14%, rgba(224, 183, 195, 0.55) 3px, transparent 3.6px),
+    radial-gradient(circle at 68% 8%, rgba(224, 183, 195, 0.4) 2.2px, transparent 2.8px),
+    radial-gradient(circle at 44% 30%, rgba(224, 183, 195, 0.5) 2.6px, transparent 3.2px),
+    radial-gradient(circle at 12% 46%, rgba(224, 183, 195, 0.45) 2.4px, transparent 3px),
+    radial-gradient(circle at 80% 42%, rgba(224, 183, 195, 0.55) 3px, transparent 3.6px),
+    radial-gradient(circle at 30% 64%, rgba(224, 183, 195, 0.4) 2.2px, transparent 2.8px),
+    radial-gradient(circle at 60% 74%, rgba(224, 183, 195, 0.5) 2.8px, transparent 3.4px),
+    radial-gradient(circle at 16% 88%, rgba(224, 183, 195, 0.45) 2.4px, transparent 3px),
+    radial-gradient(circle at 86% 90%, rgba(224, 183, 195, 0.4) 2.2px, transparent 2.8px);
+  background-size: 180px 220px;
+  mask-image:
+    linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
+    linear-gradient(to right, black 0%, black 55%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
+    linear-gradient(to right, black 0%, black 55%, transparent 100%);
+  -webkit-mask-composite: source-in;
+}
+
+.hero-wall.hero-wall-right {
+  right: 0;
+  transform: scaleX(-1);
+}
+
+.hero-wall:not(.hero-wall-right) {
+  left: 0;
+}
+
+.hc-stage {
+  --hc-marble:
+    radial-gradient(ellipse 60% 46% at 16% 10%, rgba(255, 255, 255, 0.65), transparent 60%),
+    radial-gradient(ellipse 55% 42% at 84% 78%, rgba(88, 84, 78, 0.16), transparent 62%),
+    radial-gradient(ellipse 70% 55% at 62% 22%, rgba(122, 117, 109, 0.12), transparent 58%),
+    radial-gradient(ellipse 46% 38% at 28% 86%, rgba(255, 255, 255, 0.4), transparent 55%),
+    radial-gradient(ellipse 40% 34% at 92% 18%, rgba(70, 67, 62, 0.1), transparent 55%),
+    linear-gradient(140deg, #eeece8 0%, #dad7d1 45%, #e8e5e0 100%);
+  --hc-ink: #1c1712;
+
+  position: relative;
+  min-height: 1320px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px 76px;
+  isolation: isolate;
+}
+
+.hc-stage::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 46% at 50% 18%, rgba(224, 183, 195, 0.07), transparent 72%);
+  pointer-events: none;
+}
+
+.hc-wall {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 22%;
+  background-color: color-mix(in srgb, var(--charcoal) 24%, transparent);
+  /* same ambient dust-mote motif as the hero photo's own sparkle, so the
+     bubble section's side margins read as a continuation of it rather than
+     flat black once the backdrop image fades to solid noir */
+  background-image:
+    radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.22) 3.4px, transparent 3.9px),
+    radial-gradient(circle at 62% 14%, rgba(255, 255, 255, 0.15) 2.8px, transparent 3.3px),
+    radial-gradient(circle at 40% 24%, rgba(255, 255, 255, 0.2) 3.1px, transparent 3.6px),
+    radial-gradient(circle at 82% 34%, rgba(255, 255, 255, 0.16) 2.5px, transparent 3px),
+    radial-gradient(circle at 20% 44%, rgba(255, 255, 255, 0.2) 3.4px, transparent 3.9px),
+    radial-gradient(circle at 68% 54%, rgba(255, 255, 255, 0.15) 2.8px, transparent 3.3px),
+    radial-gradient(circle at 88% 64%, rgba(255, 255, 255, 0.2) 3.1px, transparent 3.6px),
+    radial-gradient(circle at 30% 74%, rgba(255, 255, 255, 0.16) 2.8px, transparent 3.3px),
+    radial-gradient(circle at 58% 84%, rgba(255, 255, 255, 0.2) 3.4px, transparent 3.9px),
+    radial-gradient(circle at 14% 94%, rgba(255, 255, 255, 0.14) 2.5px, transparent 3px);
+  background-size: 260px 320px;
+  /* fade the inner edge (facing the bubbles) and top/bottom to transparent,
+     so this reads as ambient texture bleeding into the dark page rather than
+     a hard-edged grey panel sitting on top of it */
+  mask-image:
+    linear-gradient(to bottom, transparent 0, black 64px, black calc(100% - 64px), transparent 100%),
+    linear-gradient(to right, black 0%, black 45%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(to bottom, transparent 0, black 64px, black calc(100% - 64px), transparent 100%),
+    linear-gradient(to right, black 0%, black 45%, transparent 100%);
+  -webkit-mask-composite: source-in;
+}
+
+.hc-wall.hc-left { left: 0; }
+.hc-wall.hc-right { right: 0; transform: scaleX(-1); }
+
+/* Scatter canvas: the five charms are positioned by percentage (--hc-x,
+   --hc-y) rather than flowed in rows, so they can spread across the full
+   width and height of the section instead of clustering in the middle. */
+.hc-cluster {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1320px;
+  height: 1180px;
+}
+
+.hc-charm {
+  position: relative;
+  z-index: var(--hc-z, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.hc-charm:hover,
+.hc-charm:focus-visible {
+  z-index: 8;
+}
+
+.hc-charm:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 8px;
+  border-radius: 14px;
+}
+
+/* All charms hang from the same rail just under the section heading — only
+   each chain's length (the Chain component's --hc-drop) varies, so the
+   bubbles genuinely read as suspended rather than floating at random
+   heights. */
+.hc-charm.hc-scatter {
+  position: absolute;
+  left: var(--hc-x, 50%);
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.hc-chain {
+  display: flex;
+  gap: 9px;
+  height: var(--hc-drop);
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.hc-strand {
+  width: 6px;
+  height: 100%;
+  opacity: 0.55;
+  background-image: radial-gradient(circle, var(--silver) 0 3.2px, transparent 3.6px);
+  background-size: 12px 15px;
+  background-repeat: repeat-y;
+  background-position: center top;
+  transition: opacity 0.4s ease;
+  /* fade the top of the chain to nothing, so it reads as trailing off
+     into the dark rather than starting with a hard-cut top edge */
+  mask-image: linear-gradient(to bottom, transparent 0, black 80px);
+  mask-repeat: no-repeat;
+  mask-size: 100% 100%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 80px);
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+}
+
+.hc-charm:hover .hc-strand { opacity: 0.85; }
+
+.hc-pair {
+  position: relative;
+  display: flex;
+  margin-top: 2px;
+  transform-origin: top center;
+  transform: scale(var(--hc-scale, 1)) rotate(var(--hc-rot)) translateX(var(--hc-shift));
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.hc-charm:hover .hc-pair,
+.hc-charm:focus-visible .hc-pair {
+  transform: scale(var(--hc-scale, 1)) rotate(calc(var(--hc-rot) * 0.35)) translateX(var(--hc-shift)) translateY(-10px);
+}
+
+/* hover glow — a pre-blurred layer whose OPACITY animates instead of an
+   animated `filter: drop-shadow`, which forced the browser to fully
+   re-rasterize the bubble (6-layer marble background included) on every
+   frame. The blur itself is static, so this is a cheap compositor-only fade. */
+.hc-pair::before {
+  content: '';
+  position: absolute;
+  inset: -14px;
+  z-index: -1;
+  border-radius: 40px;
+  background: var(--rose);
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  will-change: opacity;
+  pointer-events: none;
+}
+
+.hc-charm:hover .hc-pair::before,
+.hc-charm:focus-visible .hc-pair::before {
+  opacity: 0.35;
+}
+
+.hc-bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 148px;
+  background: var(--hc-marble);
+  border-radius: 40px;
+  box-shadow: 0 20px 32px rgba(0, 0, 0, 0.52);
+  padding: 26px 22px 26px 16px;
+}
+
+.hc-bubble.hc-pill { border-radius: 999px; padding: 24px 26px 24px 20px; }
+
+.hc-tail {
+  position: absolute;
+  bottom: -16px;
+  left: 26%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  background-color: rgba(227, 223, 217, 0.72);
+  clip-path: polygon(0 0, 100% 0, 30% 100%);
+}
+
+.hc-bubble.hc-pill .hc-tail { left: 32%; }
+
+.hc-tail.hc-right {
+  left: auto;
+  right: 26%;
+  transform: translateX(50%);
+  clip-path: polygon(0 0, 100% 0, 70% 100%);
+}
+
+.hc-bubble.hc-has-tile { padding-left: 148px; }
+.hc-bubble.hc-has-tile.hc-tight { padding-left: 138px; }
+.hc-tile {
+  position: absolute;
+  left: 14px;
+  top: -20px;
+  width: 132px;
+  height: 192px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hc-tile img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35)); }
+
+.hc-tile.hc-tops {
+  width: 154px;
+  height: 224px;
+  top: -34px;
+}
+
+.hc-bubble.hc-has-tile-r { padding-right: 84px; }
+.hc-tile.hc-contained {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  left: auto;
+  transform: translateY(-50%);
+  width: 132px;
+  height: 162px;
+}
+
+.hc-bubble.hc-has-orb { padding-right: 80px; }
+.hc-orb {
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  transform: translateY(-50%);
+  width: 132px;
+  height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.hc-orb img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.35)); }
+
+.hc-text-block {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.hc-name {
+  font-weight: 600;
+  font-size: 14.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--hc-ink);
+  white-space: nowrap;
+}
+
+.hc-sub {
+  max-width: 112px;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--hc-ink) 62%, transparent);
+}
+
+@media (max-width: 760px) {
+  .hc-stage { padding: 90px 16px 56px; min-height: auto; }
+  .hc-cluster {
+    position: static;
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 30px;
+  }
+  .hc-charm.hc-scatter {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+  }
+  /* the desktop scatter layout uses long, varied chain lengths (--hc-drop)
+     to hang bubbles from a shared top rail; that doesn't translate to a
+     stacked mobile layout, so every chain collapses to one short length
+     here instead of dragging hundreds of px of empty chain between items */
+  .hc-chain {
+    height: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hc-pair,
+  .hc-strand {
+    transition-duration: 0.001ms !important;
+  }
+}

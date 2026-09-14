@@ -3,14 +3,13 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useStore } from '@/components/store'
-import { OrnateCross3D } from '@/components/ornate-cross-3d'
 import { EnterChrome } from '@/components/enter-chrome'
 import { playEnter } from '@/lib/sound'
 
 const doorEase = [0.76, 0, 0.24, 1] as const
 
-const ARRIVE_MS = 3600
-const OPEN_MS = 4200
+const ARRIVE_MS = 900
+const OPEN_MS = 1600
 
 type Phase = 'idle' | 'arriving' | 'opening'
 
@@ -159,13 +158,20 @@ export function LandingView() {
           style={{ width: 'clamp(220px, 40vw, 460px)', height: 'clamp(220px, 40vw, 460px)' }}
         >
           <span className="sr-only">Die Wölfin</span>
-          <div aria-hidden className="h-full w-full">
-            <OrnateCross3D
-              className="h-full w-full"
-              speed={reducedMotion ? 0 : 0.25}
-              scale={1}
+          <motion.div
+            aria-hidden
+            className="h-full w-full"
+            animate={reducedMotion ? undefined : { y: [0, -14, 0] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/logo-dark-cleaned-up.png"
+              alt=""
+              className="h-full w-full object-contain"
+              draggable={false}
             />
-          </div>
+          </motion.div>
         </motion.h1>
 
         <motion.p

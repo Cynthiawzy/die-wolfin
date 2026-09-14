@@ -1,81 +1,58 @@
 'use client'
 
+import type { CSSProperties } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { useStore } from '@/components/store'
 import { Reveal } from '@/components/reveal'
-import { PRODUCTS, formatPrice, type FilterKey } from '@/lib/products'
 import { EnterChrome } from '@/components/enter-chrome'
+import './closet-charms.css'
 
-const CATEGORY_TILES: {
-  label: string
-  sub: string
-  image: string
-  filter: FilterKey
-  span: string
-}[] = [
-  {
-    label: 'Clothing',
-    sub: 'Corsetry · slips · leather',
-    image: '/images/cat-clothing.png',
-    filter: 'Clothing',
-    span: 'sm:col-span-2 sm:row-span-2',
-  },
-  {
-    label: 'Shoes',
-    sub: 'Platforms · heels',
-    image: '/images/cat-shoes.png',
-    filter: 'Shoes',
-    span: '',
-  },
-  {
-    label: 'Accessories',
-    sub: 'Hardware · relics',
-    image: '/images/cat-accessories.png',
-    filter: 'Accessories',
-    span: '',
-  },
-  {
-    label: 'The Archive',
-    sub: 'Rare · numbered',
-    image: '/images/cat-archive.png',
-    filter: 'Archive',
-    span: 'sm:col-span-2',
-  },
-  {
-    label: 'On Sale',
-    sub: 'Marked down · final',
-    image: '/images/cat-sale.png',
-    filter: 'Sale',
-    span: 'sm:col-span-2',
-  },
-]
+function Chain({ drop }: { drop: number }) {
+  return (
+    <span className="hc-chain" aria-hidden="true" style={{ ['--hc-drop' as string]: `${drop}px` }}>
+      <span className="hc-strand" />
+    </span>
+  )
+}
 
 export function ClosetView() {
-  const { goToShop, navigate, viewProduct } = useStore()
-  const hangers = PRODUCTS.filter((p) =>
-    ['moto-jacket', 'slip-dress', 'corset', 'leather-pants', 'fur-coat'].includes(
-      p.id,
-    ),
-  )
+  const { viewProduct } = useStore()
+
+  const scrollToPieces = () => {
+    document.getElementById('shop-pieces')?.scrollIntoView({ behavior: 'smooth' })
+  }
 
   return (
-    <div className="relative">
+    <div className="relative overflow-hidden">
+      {/* Shared backdrop: the atelier photo + fade spans from the hero all the
+          way down through the category section, so there's no hard seam where
+          the hero ends and the hanging-charm display begins. */}
+      <motion.img
+        src="/images/closet-bg.png"
+        alt="A dim atelier hallway lit by a single chandelier"
+        className="absolute inset-0 h-full w-full object-cover object-top"
+        initial={{ scale: 1.12 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(to bottom, transparent 0%, rgba(11,11,11,0.55) 55vh, var(--noir) 92vh, var(--noir) 100%)',
+        }}
+      />
+
       {/* Hero */}
       <section className="relative flex min-h-[92vh] items-end overflow-hidden">
-        <motion.img
-          src="/images/closet-bg.png"
-          alt="A dim, gothic atelier hallway lit by a single chandelier"
-          className="absolute inset-0 h-full w-full object-cover"
-          initial={{ scale: 1.12 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-noir via-noir/40 to-noir/70" />
+        <div className="hero-wall" aria-hidden="true" />
+        <div className="hero-wall hero-wall-right" aria-hidden="true" />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 sm:px-8">
           <Reveal>
             <p className="mb-4 text-[0.65rem] uppercase tracking-[0.4em] text-rose/90">
-              Your Private Closet
+              The Shop
             </p>
           </Reveal>
           <Reveal delay={0.1}>
@@ -93,9 +70,9 @@ export function ClosetView() {
           </Reveal>
           <Reveal delay={0.3}>
             <EnterChrome
-              label="Enter the shop"
+              label="Browse the pieces"
               icon={<ArrowRight className="h-4 w-4" />}
-              onClick={() => goToShop('All')}
+              onClick={scrollToPieces}
               data-cursor="hover"
               textClassName="text-xs"
               className="mt-9"
@@ -104,127 +81,178 @@ export function ClosetView() {
         </div>
       </section>
 
-      {/* Hanging rail */}
-      <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8">
-        <Reveal>
-          <div className="mb-12 flex items-end justify-between gap-6 border-b border-border pb-6">
-            <div>
+      {/* Category tiles — hanging display */}
+      <section id="shop-pieces" className="relative overflow-hidden py-28">
+        <div className="hc-wall hc-left" aria-hidden="true" />
+        <div className="hc-wall hc-right" aria-hidden="true" />
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <Reveal>
+            <div className="mb-10 text-center">
               <p className="mb-2 text-[0.65rem] uppercase tracking-[0.35em] text-muted-foreground">
-                Currently Hanging
+                The Hanging Rail
               </p>
               <h2 className="font-serif text-3xl tracking-tight text-primary sm:text-4xl">
-                On the rail
+                Reach for what calls you.
               </h2>
             </div>
-            <button
-              onClick={() => goToShop('All')}
-              className="hidden shrink-0 text-[0.7rem] uppercase tracking-[0.28em] text-silver transition-colors hover:text-rose sm:inline"
-            >
-              See all
-            </button>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
 
-        <div className="grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
-          {hangers.map((p, i) => (
-            <Reveal key={p.id} delay={i * 0.08}>
+        {/* full-bleed: the wall panels should reach the browser edges, not
+            stop at the max-w-7xl content column */}
+        <section className="hc-stage" aria-label="Category display">
+          <div className="hc-cluster">
               <button
-                onClick={() => viewProduct(p.id)}
+                onClick={() => viewProduct('moto-jacket')}
                 data-cursor="hover"
-                className="group block w-full text-left"
+                className="hc-charm hc-scatter"
+                style={
+                  {
+                    '--hc-x': '14%',
+                    '--hc-rot': '-3deg',
+                    '--hc-shift': '2px',
+                    '--hc-z': 4,
+                    '--hc-scale': 1,
+                  } as CSSProperties
+                }
               >
-                <div className="relative mb-4 aspect-[3/4] overflow-hidden bg-charcoal">
-                  {/* the hook of the hanger */}
-                  <span className="absolute left-1/2 top-0 z-10 h-6 w-px -translate-x-1/2 bg-silver/30" />
-                  <span className="absolute left-1/2 top-6 z-10 h-2.5 w-2.5 -translate-x-1/2 rounded-full border border-silver/40" />
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={p.image || '/placeholder.svg'}
-                    alt={p.name}
-                    className="h-full w-full origin-top object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06] group-hover:rotate-[0.6deg]"
-                  />
-                  {p.preorder && (
-                    <span className="absolute right-2 top-2 z-10 bg-noir/80 px-2 py-1 text-[0.55rem] uppercase tracking-[0.2em] text-rose">
-                      Pre-order
+                <Chain drop={362} />
+                <span className="hc-pair">
+                  <span className="hc-bubble hc-has-tile">
+                    <span className="hc-tile">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/images/p-moto-jacket-cleaned-up.png" alt="Rite Leather Moto jacket" fetchPriority="high" />
                     </span>
-                  )}
-                </div>
-                <p className="font-serif text-base leading-tight text-primary transition-colors group-hover:text-rose">
-                  {p.name}
-                </p>
-                <p className="mt-1 text-[0.7rem] uppercase tracking-[0.2em] text-muted-foreground">
-                  {formatPrice(p.salePrice ?? p.price)}
-                </p>
+                    <span className="hc-text-block">
+                      <span className="hc-name font-serif">Jacket</span>
+                      <span className="hc-sub">Second skin, built to armour.</span>
+                    </span>
+                    <span className="hc-tail" aria-hidden="true" />
+                  </span>
+                </span>
               </button>
-            </Reveal>
-          ))}
-        </div>
-      </section>
 
-      {/* Category tiles */}
-      <section className="mx-auto max-w-7xl px-5 pb-28 sm:px-8">
-        <Reveal>
-          <div className="mb-12">
-            <p className="mb-2 text-[0.65rem] uppercase tracking-[0.35em] text-muted-foreground">
-              Wander By Room
-            </p>
-            <h2 className="font-serif text-3xl tracking-tight text-primary sm:text-4xl">
-              Choose your descent
-            </h2>
-          </div>
-        </Reveal>
-
-        <div className="grid auto-rows-[220px] grid-cols-1 gap-4 sm:grid-cols-4">
-          {CATEGORY_TILES.map((tile, i) => (
-            <Reveal key={tile.label} delay={i * 0.06} className={tile.span}>
               <button
-                onClick={() => goToShop(tile.filter)}
+                onClick={() => viewProduct('corset')}
                 data-cursor="hover"
-                className="group relative h-full w-full overflow-hidden bg-charcoal text-left"
+                className="hc-charm hc-scatter"
+                style={
+                  {
+                    '--hc-x': '66%',
+                    '--hc-rot': '-4deg',
+                    '--hc-shift': '4px',
+                    '--hc-z': 2,
+                    '--hc-scale': 1.16,
+                  } as CSSProperties
+                }
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={tile.image || '/placeholder.svg'}
-                  alt=""
-                  aria-hidden
-                  className="absolute inset-0 h-full w-full object-cover opacity-70 grayscale transition-all duration-700 group-hover:scale-105 group-hover:opacity-90 group-hover:grayscale-0"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-noir/90 via-noir/30 to-transparent" />
-                <div className="absolute inset-0 flex flex-col justify-end p-6">
-                  <div className="flex items-center gap-2 overflow-hidden">
-                    <h3 className="font-serif text-2xl tracking-tight text-primary transition-colors group-hover:text-rose">
-                      {tile.label}
-                    </h3>
-                    <ArrowRight className="h-4 w-4 -translate-x-3 text-rose opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
-                  </div>
-                  <p className="mt-1 text-[0.7rem] uppercase tracking-[0.24em] text-silver/80">
-                    {tile.sub}
-                  </p>
-                </div>
+                <Chain drop={382} />
+                <span className="hc-pair">
+                  <span className="hc-bubble hc-has-orb">
+                    <span className="hc-text-block">
+                      <span className="hc-name font-serif">Tops</span>
+                      <span className="hc-sub">Layers that hold their own.</span>
+                    </span>
+                    <span className="hc-orb">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/images/p-corset-cleaned-up.png" alt="Vespera Lace Corset" fetchPriority="high" />
+                    </span>
+                    <span className="hc-tail hc-right" aria-hidden="true" />
+                  </span>
+                </span>
               </button>
-            </Reveal>
-          ))}
-        </div>
-      </section>
 
-      {/* Closing invitation */}
-      <section className="border-t border-border">
-        <div className="mx-auto flex max-w-7xl flex-col items-center gap-8 px-5 py-24 text-center sm:px-8">
-          <Reveal>
-            <h2 className="max-w-2xl text-balance font-serif text-4xl leading-tight tracking-tight text-primary sm:text-5xl">
-              The full collection is waiting in the shop.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <EnterChrome
-              label="Enter the shop"
-              icon={<ArrowRight className="h-4 w-4" />}
-              onClick={() => navigate('shop')}
-              data-cursor="hover"
-              textClassName="text-xs"
-            />
-          </Reveal>
-        </div>
+              <button
+                onClick={() => viewProduct('leather-pants')}
+                data-cursor="hover"
+                className="hc-charm hc-scatter"
+                style={
+                  {
+                    '--hc-x': '38%',
+                    '--hc-rot': '-3deg',
+                    '--hc-shift': '6px',
+                    '--hc-z': 3,
+                    '--hc-scale': 0.9,
+                  } as CSSProperties
+                }
+              >
+                <Chain drop={572} />
+                <span className="hc-pair">
+                  <span className="hc-bubble hc-has-tile-r">
+                    <span className="hc-text-block">
+                      <span className="hc-name font-serif">Bottoms</span>
+                      <span className="hc-sub">Finishes the silhouette.</span>
+                    </span>
+                    <span className="hc-tile hc-contained">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/images/p-leather-pants-cleaned-up.png" alt="Onyx Leather Trouser" fetchPriority="high" />
+                    </span>
+                    <span className="hc-tail" aria-hidden="true" />
+                  </span>
+                </span>
+              </button>
+
+              <button
+                onClick={() => viewProduct('bodysuit')}
+                data-cursor="hover"
+                className="hc-charm hc-scatter"
+                style={
+                  {
+                    '--hc-x': '12%',
+                    '--hc-rot': '4deg',
+                    '--hc-shift': '-6px',
+                    '--hc-z': 3,
+                    '--hc-scale': 0.9,
+                  } as CSSProperties
+                }
+              >
+                <Chain drop={900} />
+                <span className="hc-pair">
+                  <span className="hc-bubble hc-has-tile hc-tight">
+                    <span className="hc-tile hc-tops">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/images/p-bodysuit-cleaned-up.png" alt="Seraph Lace Bodysuit" fetchPriority="high" />
+                    </span>
+                    <span className="hc-text-block">
+                      <span className="hc-name font-serif">Sets</span>
+                      <span className="hc-sub">Coordinated pieces, worn as one.</span>
+                    </span>
+                    <span className="hc-tail hc-right" aria-hidden="true" />
+                  </span>
+                </span>
+              </button>
+
+              <button
+                onClick={() => viewProduct('slip-dress')}
+                data-cursor="hover"
+                className="hc-charm hc-scatter"
+                style={
+                  {
+                    '--hc-x': '78%',
+                    '--hc-rot': '3deg',
+                    '--hc-shift': '-4px',
+                    '--hc-z': 3,
+                    '--hc-scale': 1.1,
+                  } as CSSProperties
+                }
+              >
+                <Chain drop={715} />
+                <span className="hc-pair">
+                  <span className="hc-bubble hc-pill hc-has-orb">
+                    <span className="hc-text-block">
+                      <span className="hc-name font-serif">One&nbsp;Piece</span>
+                      <span className="hc-sub">Nothing to coordinate.</span>
+                    </span>
+                    <span className="hc-orb">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src="/images/p-slip-dress-cleaned-up.png" alt="Nocturne Satin Slip" fetchPriority="high" />
+                    </span>
+                    <span className="hc-tail" aria-hidden="true" />
+                  </span>
+                </span>
+              </button>
+            </div>
+          </section>
       </section>
     </div>
   )

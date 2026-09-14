@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Plus } from 'lucide-react'
 import { useStore } from '@/components/store'
 import { Reveal } from '@/components/reveal'
+import { FramedProduct } from '@/components/framed-product'
 import {
   FILTERS,
   PRODUCTS,
@@ -87,16 +88,15 @@ export function ShopView() {
                   }
                 }}
               >
-                <div className="relative mb-4 aspect-[3/4] overflow-hidden bg-charcoal">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={p.image || '/placeholder.svg'}
+                <div className="relative mb-4">
+                  <FramedProduct
+                    image={p.image}
                     alt={p.name}
-                    className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    imageClassName="group-hover:scale-105"
                   />
 
                   {/* tags */}
-                  <div className="absolute left-2 top-2 flex flex-col gap-1">
+                  <div className="absolute left-3 top-3 flex flex-col gap-1">
                     {p.sale && (
                       <span className="bg-rose px-2 py-1 text-[0.55rem] font-semibold uppercase tracking-[0.18em] text-accent-foreground">
                         Sale
@@ -115,14 +115,14 @@ export function ShopView() {
                   </div>
 
                   {/* add to cart */}
-                  <div className="absolute inset-x-0 bottom-0 translate-y-full p-3 transition-transform duration-500 ease-out group-hover:translate-y-0">
+                  <div className="absolute inset-x-0 bottom-[9%] translate-y-full px-[18%] transition-transform duration-500 ease-out group-hover:translate-y-0">
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
                         addToCart(p)
                       }}
                       data-cursor="hover"
-                      className="flex w-full items-center justify-center gap-2 border border-rose/60 bg-noir/85 py-3 text-[0.65rem] font-semibold uppercase tracking-[0.26em] text-primary backdrop-blur-sm transition-colors hover:bg-rose hover:text-accent-foreground"
+                      className="flex w-full items-center justify-center gap-2 border border-rose/60 bg-noir/90 py-3 text-[0.65rem] font-semibold uppercase tracking-[0.26em] text-primary backdrop-blur-sm transition-colors hover:bg-rose hover:text-accent-foreground"
                     >
                       <Plus className="h-3.5 w-3.5" />
                       {p.preorder ? 'Reserve' : 'Add to bag'}

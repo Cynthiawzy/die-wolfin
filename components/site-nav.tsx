@@ -9,10 +9,10 @@ export function SiteNav() {
   const { view, navigate, cartCount, setCartOpen } = useStore()
   const show = view !== 'landing'
 
-  const links: { label: string; target: 'closet' | 'shop' }[] = [
-    { label: 'The Closet', target: 'closet' },
-    { label: 'The Shop', target: 'shop' },
-  ]
+  // 'closet' is the shop now — it's the sole browsing destination, and
+  // 'product' (reached by clicking a piece) still counts as "in the shop"
+  // for the active-link underline.
+  const shopActive = view === 'closet' || view === 'product'
 
   return (
     <AnimatePresence>
@@ -37,26 +37,21 @@ export function SiteNav() {
             </button>
 
             <div className="flex items-center gap-4 sm:gap-9">
-              {links.map((l) => (
-                <button
-                  key={l.target}
-                  onClick={() => navigate(l.target)}
+              <button
+                onClick={() => navigate('closet')}
+                className={cn(
+                  'group relative whitespace-nowrap text-[0.6rem] font-medium uppercase tracking-[0.16em] transition-colors sm:text-[0.7rem] sm:tracking-[0.28em]',
+                  shopActive ? 'text-rose' : 'text-silver hover:text-primary',
+                )}
+              >
+                The Shop
+                <span
                   className={cn(
-                    'group relative whitespace-nowrap text-[0.6rem] font-medium uppercase tracking-[0.16em] transition-colors sm:text-[0.7rem] sm:tracking-[0.28em]',
-                    view === l.target
-                      ? 'text-rose'
-                      : 'text-silver hover:text-primary',
+                    'absolute -bottom-1.5 left-0 h-px bg-rose transition-all duration-300',
+                    shopActive ? 'w-full' : 'w-0 group-hover:w-full',
                   )}
-                >
-                  {l.label}
-                  <span
-                    className={cn(
-                      'absolute -bottom-1.5 left-0 h-px bg-rose transition-all duration-300',
-                      view === l.target ? 'w-full' : 'w-0 group-hover:w-full',
-                    )}
-                  />
-                </button>
-              ))}
+                />
+              </button>
 
               <button
                 onClick={() => setCartOpen(true)}

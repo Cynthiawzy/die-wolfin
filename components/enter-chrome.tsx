@@ -24,7 +24,7 @@ export function EnterChrome({
     >
       <span
         className={cn(
-          'animate-shimmer bg-[linear-gradient(110deg,#6b6b6b_20%,#ffffff_40%,#e0b7c3_55%,#ffffff_70%,#6b6b6b_85%)] bg-[length:200%_100%] bg-clip-text font-cinzel text-base font-semibold tracking-[0.5em] text-transparent',
+          'text-sm font-medium uppercase tracking-[0.4em] text-primary transition-colors duration-300 group-hover:text-rose',
           textClassName,
         )}
       >

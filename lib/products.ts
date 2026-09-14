@@ -24,7 +24,6 @@ export type Product = {
 }
 
 const CLOTHING_SIZES = ['XS', 'S', 'M', 'L', 'XL']
-const SHOE_SIZES = ['36', '37', '38', '39', '40', '41']
 
 export const PRODUCTS: Product[] = [
   {
@@ -106,51 +105,6 @@ export const PRODUCTS: Product[] = [
     ],
   },
   {
-    id: 'boots',
-    name: 'Descent Platform Boot',
-    category: 'Shoes',
-    price: 1120,
-    image: '/images/p-boots.png',
-    blurb: 'Six-inch monolith sole. Buckled to the knee.',
-    description:
-      'A six-inch monolith sole under a knee-high shaft, closed with five buckled straps down the outer leg. Full-grain leather upper, steel shank underfoot. Heavy on purpose — it announces you before you enter a room.',
-    sizes: SHOE_SIZES,
-    colors: [
-      { name: 'Black', hex: '#0c0c0c' },
-      { name: 'Oxblood', hex: '#3d1016' },
-    ],
-  },
-  {
-    id: 'studded-bag',
-    name: 'Reliquary Studded Bag',
-    category: 'Accessories',
-    price: 1290,
-    image: '/images/p-studded-bag.png',
-    blurb: 'Cathedral hardware on blackened calf. Carries your secrets.',
-    description:
-      'Blackened calfskin body with cathedral-arch hardware cast in solid brass, each stud set by hand. Structured base, chain-and-leather strap worn short or long. One interior pocket, lined in the same rose as the seal on the box it ships in.',
-    colors: [
-      { name: 'Black', hex: '#0c0c0c' },
-      { name: 'Gunmetal', hex: '#3a3d42' },
-    ],
-  },
-  {
-    id: 'necklace',
-    name: 'Crux Silver Pendant',
-    category: 'Accessories',
-    price: 480,
-    salePrice: 336,
-    sale: true,
-    image: '/images/p-necklace.png',
-    blurb: 'Sterling relic on a heavy chain. Devotion, worn openly.',
-    description:
-      'Sterling silver cross pendant, hand-engraved, on a heavy curb chain long enough to layer or wear alone. Oxidised in the grooves to hold the detail, polished at every raised edge. Comes in a lined reliquary box.',
-    colors: [
-      { name: 'Silver', hex: '#c7c7cc' },
-      { name: 'Blackened Silver', hex: '#4a4a4e' },
-    ],
-  },
-  {
     id: 'bodysuit',
     name: 'Seraph Lace Bodysuit',
     category: 'Clothing',
@@ -165,38 +119,6 @@ export const PRODUCTS: Product[] = [
       { name: 'Nude Illusion', hex: '#8a6a63' },
     ],
   },
-  {
-    id: 'mask',
-    name: 'Masque de Nuit',
-    category: 'Accessories',
-    price: 320,
-    archive: true,
-    image: '/images/p-mask.png',
-    blurb: 'Archive. Silk masquerade, hand-stitched. A dozen ever made.',
-    description:
-      'Archive piece. Silk-wrapped masquerade mask, hand-stitched with a single row of jet beading along the brow. A dozen were ever made and none have been remade since. Elastic tie, one size.',
-  },
-  {
-    id: 'gloves',
-    name: 'Vow Opera Gloves',
-    category: 'Accessories',
-    price: 290,
-    archive: true,
-    image: '/images/p-gloves.png',
-    blurb: 'Archive. Elbow-length satin. The final gesture of a look.',
-    description:
-      'Archive piece. Elbow-length satin gloves, finished with a single covered button at the wrist. Kept in the archive as the closing note of the look they were designed for — the last thing you put on.',
-  },
-  {
-    id: 'parfum',
-    name: 'Die Wölfin Eau Noire',
-    category: 'Beauty',
-    price: 210,
-    image: '/images/p-parfum.png',
-    blurb: 'Oud, leather, black rose. A scent that arrives before you.',
-    description:
-      'Oud, worn leather, and black rose over a base of dark amber and smoke. Eau de parfum concentration, 50ml. Built to last from dusk until whatever the night turns into.',
-  },
 ]
 
 export type FilterKey =
@@ -209,16 +131,12 @@ export type FilterKey =
   | 'Archive'
   | 'Sale'
 
-export const FILTERS: FilterKey[] = [
-  'All',
-  'Clothing',
-  'Outerwear',
-  'Shoes',
-  'Accessories',
-  'Beauty',
-  'Archive',
-  'Sale',
-]
+// Shoes, Accessories, and Beauty aren't part of the initial launch catalog,
+// and no current piece is archive-tagged — all left out of this list (which
+// drives the visible filter pills) rather than removed from the
+// FilterKey/Category types, so bringing one back later is just "add
+// products," not a type-system change.
+export const FILTERS: FilterKey[] = ['All', 'Clothing', 'Outerwear', 'Sale']
 
 export function filterProducts(products: Product[], filter: FilterKey): Product[] {
   if (filter === 'All') return products

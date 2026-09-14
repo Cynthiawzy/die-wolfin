@@ -3,10 +3,10 @@
 import { useStore } from '@/components/store'
 
 export function SiteFooter() {
-  const { navigate, goToShop } = useStore()
+  const { navigate, viewProduct } = useStore()
 
   return (
-    <footer className="border-t border-border bg-[#0a0a0a]">
+    <footer className="dot-texture border-t border-border bg-[#0a0a0a]">
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
         <div className="flex flex-col justify-between gap-12 md:flex-row">
           <div className="max-w-sm">
@@ -39,16 +39,14 @@ export function SiteFooter() {
 
           <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
             <FootCol title="Rooms">
-              <FootLink onClick={() => goToShop('Clothing')}>Clothing</FootLink>
-              <FootLink onClick={() => goToShop('Shoes')}>Shoes</FootLink>
-              <FootLink onClick={() => goToShop('Accessories')}>
-                Accessories
+              <FootLink onClick={() => viewProduct('corset')}>Clothing</FootLink>
+              <FootLink onClick={() => viewProduct('moto-jacket')}>
+                Outerwear
               </FootLink>
-              <FootLink onClick={() => goToShop('Archive')}>Archive</FootLink>
+              <FootLink onClick={() => viewProduct('slip-dress')}>On Sale</FootLink>
             </FootCol>
             <FootCol title="House">
-              <FootLink onClick={() => navigate('closet')}>The Closet</FootLink>
-              <FootLink onClick={() => navigate('shop')}>The Shop</FootLink>
+              <FootLink onClick={() => navigate('closet')}>The Shop</FootLink>
               <FootLink onClick={() => navigate('landing')}>The Doors</FootLink>
             </FootCol>
             <FootCol title="Care">

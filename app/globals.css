@@ -31,19 +31,10 @@
 
   --font-serif: var(--font-playfair), Didot, 'Times New Roman', serif;
   --font-sans: var(--font-inter), 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --font-cinzel: var(--font-cinzel), Didot, serif;
 
   --radius-sm: 2px;
   --radius-md: 3px;
   --radius-lg: 4px;
-
-  --animate-shimmer: shimmer 3.5s linear infinite;
-}
-
-@keyframes shimmer {
-  to {
-    background-position: -200% 0;
-  }
 }
 
 :root {
@@ -74,6 +65,21 @@
   --border: rgba(255, 255, 255, 0.09);
   --input: rgba(255, 255, 255, 0.14);
   --ring: #e0b7c3;
+}
+
+/* Subtle dot texture — the same motif used behind the shop's hanging
+   display, reused sparingly elsewhere for a consistent minimal backdrop
+   instead of a flat panel. */
+.dot-texture {
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.05) 2px, transparent 2.4px),
+    radial-gradient(circle at 62% 12%, rgba(255, 255, 255, 0.04) 1.6px, transparent 2px),
+    radial-gradient(circle at 40% 48%, rgba(255, 255, 255, 0.045) 1.8px, transparent 2.2px),
+    radial-gradient(circle at 82% 40%, rgba(255, 255, 255, 0.04) 1.4px, transparent 1.8px),
+    radial-gradient(circle at 20% 74%, rgba(255, 255, 255, 0.045) 2px, transparent 2.4px),
+    radial-gradient(circle at 68% 82%, rgba(255, 255, 255, 0.035) 1.6px, transparent 2px),
+    radial-gradient(circle at 88% 92%, rgba(255, 255, 255, 0.045) 1.8px, transparent 2.2px);
+  background-size: 132px 132px;
 }
 
 @layer base {

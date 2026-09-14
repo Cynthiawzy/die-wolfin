@@ -8,7 +8,7 @@ import { Reveal } from '@/components/reveal'
 import { getProduct, formatPrice } from '@/lib/products'
 
 export function ProductView() {
-  const { selectedProductId, navigate, goToShop, addToCart } = useStore()
+  const { selectedProductId, navigate, addToCart } = useStore()
   const product = selectedProductId ? getProduct(selectedProductId) : undefined
 
   const [size, setSize] = useState<string | null>(null)
@@ -20,7 +20,7 @@ export function ProductView() {
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-5 py-32 text-center sm:px-8">
         <p className="font-serif text-2xl text-silver">This piece has gone missing.</p>
         <button
-          onClick={() => goToShop('All')}
+          onClick={() => navigate('closet')}
           data-cursor="hover"
           className="mt-2 inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.28em] text-primary transition-colors hover:text-rose"
         >
@@ -48,10 +48,10 @@ export function ProductView() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-5 pb-28 pt-28 sm:px-8 sm:pt-32">
+    <div className="dot-texture mx-auto max-w-7xl px-5 pb-28 pt-28 sm:px-8 sm:pt-32">
       <Reveal>
         <button
-          onClick={() => navigate('shop')}
+          onClick={() => navigate('closet')}
           data-cursor="hover"
           className="group mb-10 inline-flex items-center gap-2 text-[0.7rem] uppercase tracking-[0.28em] text-muted-foreground transition-colors hover:text-rose"
         >
