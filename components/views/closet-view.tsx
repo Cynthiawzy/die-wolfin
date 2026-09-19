@@ -25,30 +25,32 @@ export function ClosetView() {
 
   return (
     <div className="relative overflow-hidden">
-      {/* Shared backdrop: the atelier photo + fade spans from the hero all the
-          way down through the category section, so there's no hard seam where
-          the hero ends and the hanging-charm display begins. */}
-      <motion.img
-        src="/images/closet-bg.png"
-        alt="A dim atelier hallway lit by a single chandelier"
-        className="absolute inset-0 h-full w-full object-cover object-top"
-        initial={{ scale: 1.12 }}
-        animate={{ scale: 1 }}
-        transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            'linear-gradient(to bottom, transparent 0%, rgba(11,11,11,0.55) 55vh, var(--noir) 92vh, var(--noir) 100%)',
-        }}
-      />
-
       {/* Hero */}
       <section className="relative flex min-h-[92vh] items-end overflow-hidden">
-        <div className="hero-wall" aria-hidden="true" />
-        <div className="hero-wall hero-wall-right" aria-hidden="true" />
+        {/* Scoped to the hero itself (not the whole combined section) — a
+            portrait photo like this one needs its own crop math; stretching
+            it across the much taller category section below squashed the
+            subject out of frame entirely. The bottom-heavy fade still meets
+            solid noir by the very bottom, so the category section (which
+            has no background of its own, just the page's noir) reads as a
+            continuous surface with no seam. */}
+        <motion.img
+          src="/images/hero-angel.jpg"
+          alt="A dark-winged figure in silhouette against gothic cathedral spires at night"
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ objectPosition: '50% 50%', filter: 'brightness(0.86) saturate(0.85) contrast(1.08)' }}
+          initial={{ scale: 1.12 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 2.4, ease: [0.22, 1, 0.36, 1] }}
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              'linear-gradient(to top, var(--noir) 0%, rgba(11,11,11,0.55) 30%, rgba(11,11,11,0.12) 62%, transparent 100%)',
+          }}
+        />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 sm:px-8">
           <Reveal>
             <p className="mb-4 text-[0.65rem] uppercase tracking-[0.4em] text-rose/90">
@@ -102,155 +104,155 @@ export function ClosetView() {
             stop at the max-w-7xl content column */}
         <section className="hc-stage" aria-label="Category display">
           <div className="hc-cluster">
-              <button
-                onClick={() => viewProduct('moto-jacket')}
-                data-cursor="hover"
-                className="hc-charm hc-scatter"
+              <div
+                className="hc-charm hc-scatter hc-charm-ai"
                 style={
                   {
-                    '--hc-x': '14%',
+                    '--hc-x': '31%',
                     '--hc-rot': '-3deg',
                     '--hc-shift': '2px',
                     '--hc-z': 4,
-                    '--hc-scale': 1,
+                    '--hc-scale': 1.62,
+                    '--hc-ai-mask': 'url(/images/ChatGPT-new-leather-jacket-bubble.png)',
+                    '--hc-hook-x': '32.26%',
                   } as CSSProperties
                 }
               >
-                <Chain drop={362} />
-                <span className="hc-pair">
-                  <span className="hc-bubble hc-has-tile">
-                    <span className="hc-tile">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/images/p-moto-jacket-cleaned-up.png" alt="Rite Leather Moto jacket" fetchPriority="high" />
-                    </span>
-                    <span className="hc-text-block">
-                      <span className="hc-name font-serif">Jacket</span>
-                      <span className="hc-sub">Second skin, built to armour.</span>
-                    </span>
-                    <span className="hc-tail" aria-hidden="true" />
-                  </span>
-                </span>
-              </button>
+                <Chain drop={371} />
+                <button
+                  onClick={() => viewProduct('moto-jacket')}
+                  data-cursor="hover"
+                  className="hc-pair"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/ChatGPT-new-leather-jacket-bubble.png"
+                    alt="Jacket — Second skin, built to armour."
+                    className="hc-ai-bubble"
+                    fetchPriority="high"
+                  />
+                </button>
+              </div>
 
-              <button
-                onClick={() => viewProduct('corset')}
-                data-cursor="hover"
-                className="hc-charm hc-scatter"
+              <div
+                className="hc-charm hc-scatter hc-charm-ai"
                 style={
                   {
-                    '--hc-x': '66%',
+                    '--hc-x': '59%',
                     '--hc-rot': '-4deg',
                     '--hc-shift': '4px',
                     '--hc-z': 2,
-                    '--hc-scale': 1.16,
+                    '--hc-scale': 1.39,
+                    '--hc-ai-mask': 'url(/images/ChatGPT-new-slip-dress-bubble.png)',
+                    '--hc-hook-x': '65.72%',
                   } as CSSProperties
                 }
               >
-                <Chain drop={382} />
-                <span className="hc-pair">
-                  <span className="hc-bubble hc-has-orb">
-                    <span className="hc-text-block">
-                      <span className="hc-name font-serif">Tops</span>
-                      <span className="hc-sub">Layers that hold their own.</span>
-                    </span>
-                    <span className="hc-orb">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/images/p-corset-cleaned-up.png" alt="Vespera Lace Corset" fetchPriority="high" />
-                    </span>
-                    <span className="hc-tail hc-right" aria-hidden="true" />
-                  </span>
-                </span>
-              </button>
+                <Chain drop={487} />
+                <button
+                  onClick={() => viewProduct('slip-dress')}
+                  data-cursor="hover"
+                  className="hc-pair"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/ChatGPT-new-slip-dress-bubble.png"
+                    alt="One Piece — Nothing to coordinate."
+                    className="hc-ai-bubble"
+                    fetchPriority="high"
+                  />
+                </button>
+              </div>
 
-              <button
-                onClick={() => viewProduct('leather-pants')}
-                data-cursor="hover"
-                className="hc-charm hc-scatter"
+              <div
+                className="hc-charm hc-scatter hc-charm-ai"
                 style={
                   {
-                    '--hc-x': '38%',
+                    '--hc-x': '47%',
                     '--hc-rot': '-3deg',
                     '--hc-shift': '6px',
                     '--hc-z': 3,
-                    '--hc-scale': 0.9,
+                    '--hc-scale': 1.08,
+                    '--hc-ai-mask': 'url(/images/ChatGPT-new-corset-bubble.png)',
+                    '--hc-hook-x': '40.14%',
                   } as CSSProperties
                 }
               >
-                <Chain drop={572} />
-                <span className="hc-pair">
-                  <span className="hc-bubble hc-has-tile-r">
-                    <span className="hc-text-block">
-                      <span className="hc-name font-serif">Bottoms</span>
-                      <span className="hc-sub">Finishes the silhouette.</span>
-                    </span>
-                    <span className="hc-tile hc-contained">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/images/p-leather-pants-cleaned-up.png" alt="Onyx Leather Trouser" fetchPriority="high" />
-                    </span>
-                    <span className="hc-tail" aria-hidden="true" />
-                  </span>
-                </span>
-              </button>
+                <Chain drop={662} />
+                <button
+                  onClick={() => viewProduct('corset')}
+                  data-cursor="hover"
+                  className="hc-pair"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/ChatGPT-new-corset-bubble.png"
+                    alt="Tops — Layers that hold their own."
+                    className="hc-ai-bubble"
+                    fetchPriority="high"
+                  />
+                </button>
+              </div>
 
-              <button
-                onClick={() => viewProduct('bodysuit')}
-                data-cursor="hover"
-                className="hc-charm hc-scatter"
+              <div
+                className="hc-charm hc-scatter hc-charm-ai"
                 style={
                   {
-                    '--hc-x': '12%',
+                    '--hc-x': '32%',
                     '--hc-rot': '4deg',
                     '--hc-shift': '-6px',
                     '--hc-z': 3,
-                    '--hc-scale': 0.9,
+                    '--hc-scale': 1.08,
+                    '--hc-ai-mask': 'url(/images/ChatGPT-new-sets-bubble.png)',
+                    '--hc-hook-x': '65.01%',
                   } as CSSProperties
                 }
               >
-                <Chain drop={900} />
-                <span className="hc-pair">
-                  <span className="hc-bubble hc-has-tile hc-tight">
-                    <span className="hc-tile hc-tops">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/images/p-bodysuit-cleaned-up.png" alt="Seraph Lace Bodysuit" fetchPriority="high" />
-                    </span>
-                    <span className="hc-text-block">
-                      <span className="hc-name font-serif">Sets</span>
-                      <span className="hc-sub">Coordinated pieces, worn as one.</span>
-                    </span>
-                    <span className="hc-tail hc-right" aria-hidden="true" />
-                  </span>
-                </span>
-              </button>
+                <Chain drop={756} />
+                <button
+                  onClick={() => viewProduct('bodysuit')}
+                  data-cursor="hover"
+                  className="hc-pair"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/ChatGPT-new-sets-bubble.png"
+                    alt="Sets — Coordinated pieces, worn as one."
+                    className="hc-ai-bubble"
+                    fetchPriority="high"
+                  />
+                </button>
+              </div>
 
-              <button
-                onClick={() => viewProduct('slip-dress')}
-                data-cursor="hover"
-                className="hc-charm hc-scatter"
+              <div
+                className="hc-charm hc-scatter hc-charm-ai"
                 style={
                   {
-                    '--hc-x': '78%',
+                    '--hc-x': '68%',
                     '--hc-rot': '3deg',
                     '--hc-shift': '-4px',
                     '--hc-z': 3,
-                    '--hc-scale': 1.1,
+                    '--hc-scale': 1.32,
+                    '--hc-ai-mask': 'url(/images/ChatGPT-new-pants-bubble.png)',
+                    '--hc-hook-x': '65.95%',
                   } as CSSProperties
                 }
               >
-                <Chain drop={715} />
-                <span className="hc-pair">
-                  <span className="hc-bubble hc-pill hc-has-orb">
-                    <span className="hc-text-block">
-                      <span className="hc-name font-serif">One&nbsp;Piece</span>
-                      <span className="hc-sub">Nothing to coordinate.</span>
-                    </span>
-                    <span className="hc-orb">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src="/images/p-slip-dress-cleaned-up.png" alt="Nocturne Satin Slip" fetchPriority="high" />
-                    </span>
-                    <span className="hc-tail" aria-hidden="true" />
-                  </span>
-                </span>
-              </button>
+                <Chain drop={733} />
+                <button
+                  onClick={() => viewProduct('leather-pants')}
+                  data-cursor="hover"
+                  className="hc-pair"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/images/ChatGPT-new-pants-bubble.png"
+                    alt="Bottoms — Finishes the silhouette."
+                    className="hc-ai-bubble"
+                    fetchPriority="high"
+                  />
+                </button>
+              </div>
             </div>
           </section>
       </section>

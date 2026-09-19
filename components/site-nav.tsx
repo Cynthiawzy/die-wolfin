@@ -55,15 +55,17 @@ export function SiteNav() {
 
               <button
                 onClick={() => setCartOpen(true)}
-                className="relative flex items-center text-silver transition-colors hover:text-primary"
+                className="-m-[13px] flex items-center p-[13px] text-silver transition-colors hover:text-primary"
                 aria-label={`Open bag, ${cartCount} items`}
               >
-                <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.4} />
-                {cartCount > 0 && (
-                  <span className="absolute -right-2.5 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose px-1 font-sans text-[0.6rem] font-semibold text-accent-foreground">
-                    {cartCount}
-                  </span>
-                )}
+                <span className="relative flex">
+                  <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.4} />
+                  {cartCount > 0 && (
+                    <span className="absolute -right-2.5 -top-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose px-1 font-sans text-[0.6rem] font-semibold text-accent-foreground">
+                      {cartCount}
+                    </span>
+                  )}
+                </span>
               </button>
             </div>
           </nav>

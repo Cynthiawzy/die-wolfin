@@ -3,49 +3,6 @@
    (imported once here), not Tailwind utilities, and need to stay clear of
    the rest of the site's class names. */
 
-/* Pink polka-dot overlay for the hero's side walls. The hero background is
-   a photo (closet-bg.png) with its own baked-in wall texture that can't be
-   recolored directly — this lays a rose-toned dot pattern on top of it in
-   the same wall regions instead, faded at the inner edge and top/bottom so
-   it reads as an intentional wash of color rather than a pasted sticker. */
-.hero-wall {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 20%;
-  z-index: 1;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  background-image:
-    radial-gradient(circle at 22% 14%, rgba(224, 183, 195, 0.55) 3px, transparent 3.6px),
-    radial-gradient(circle at 68% 8%, rgba(224, 183, 195, 0.4) 2.2px, transparent 2.8px),
-    radial-gradient(circle at 44% 30%, rgba(224, 183, 195, 0.5) 2.6px, transparent 3.2px),
-    radial-gradient(circle at 12% 46%, rgba(224, 183, 195, 0.45) 2.4px, transparent 3px),
-    radial-gradient(circle at 80% 42%, rgba(224, 183, 195, 0.55) 3px, transparent 3.6px),
-    radial-gradient(circle at 30% 64%, rgba(224, 183, 195, 0.4) 2.2px, transparent 2.8px),
-    radial-gradient(circle at 60% 74%, rgba(224, 183, 195, 0.5) 2.8px, transparent 3.4px),
-    radial-gradient(circle at 16% 88%, rgba(224, 183, 195, 0.45) 2.4px, transparent 3px),
-    radial-gradient(circle at 86% 90%, rgba(224, 183, 195, 0.4) 2.2px, transparent 2.8px);
-  background-size: 180px 220px;
-  mask-image:
-    linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
-    linear-gradient(to right, black 0%, black 55%, transparent 100%);
-  mask-composite: intersect;
-  -webkit-mask-image:
-    linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
-    linear-gradient(to right, black 0%, black 55%, transparent 100%);
-  -webkit-mask-composite: source-in;
-}
-
-.hero-wall.hero-wall-right {
-  right: 0;
-  transform: scaleX(-1);
-}
-
-.hero-wall:not(.hero-wall-right) {
-  left: 0;
-}
-
 .hc-stage {
   --hc-marble:
     radial-gradient(ellipse 60% 46% at 16% 10%, rgba(255, 255, 255, 0.65), transparent 60%),
@@ -80,21 +37,6 @@
   bottom: 0;
   width: 22%;
   background-color: color-mix(in srgb, var(--charcoal) 24%, transparent);
-  /* same ambient dust-mote motif as the hero photo's own sparkle, so the
-     bubble section's side margins read as a continuation of it rather than
-     flat black once the backdrop image fades to solid noir */
-  background-image:
-    radial-gradient(circle at 18% 6%, rgba(255, 255, 255, 0.22) 3.4px, transparent 3.9px),
-    radial-gradient(circle at 62% 14%, rgba(255, 255, 255, 0.15) 2.8px, transparent 3.3px),
-    radial-gradient(circle at 40% 24%, rgba(255, 255, 255, 0.2) 3.1px, transparent 3.6px),
-    radial-gradient(circle at 82% 34%, rgba(255, 255, 255, 0.16) 2.5px, transparent 3px),
-    radial-gradient(circle at 20% 44%, rgba(255, 255, 255, 0.2) 3.4px, transparent 3.9px),
-    radial-gradient(circle at 68% 54%, rgba(255, 255, 255, 0.15) 2.8px, transparent 3.3px),
-    radial-gradient(circle at 88% 64%, rgba(255, 255, 255, 0.2) 3.1px, transparent 3.6px),
-    radial-gradient(circle at 30% 74%, rgba(255, 255, 255, 0.16) 2.8px, transparent 3.3px),
-    radial-gradient(circle at 58% 84%, rgba(255, 255, 255, 0.2) 3.4px, transparent 3.9px),
-    radial-gradient(circle at 14% 94%, rgba(255, 255, 255, 0.14) 2.5px, transparent 3px);
-  background-size: 260px 320px;
   /* fade the inner edge (facing the bubbles) and top/bottom to transparent,
      so this reads as ambient texture bleeding into the dark page rather than
      a hard-edged grey panel sitting on top of it */
@@ -119,33 +61,39 @@
   z-index: 1;
   width: 100%;
   max-width: 1320px;
-  height: 1180px;
+  height: 1220px;
 }
 
+/* .hc-charm is a plain (non-interactive) wrapper around the decorative
+   Chain plus the real clickable element (.hc-pair). It used to be the
+   <button> itself, but its box included the chain's full height — with
+   charms hanging at very different chain lengths but similar x positions,
+   those tall invisible hit-rectangles overlapped and could steal clicks
+   meant for a neighboring charm's visible bubble. Confining the actual
+   button to .hc-pair fixes that; :hover still reaches .hc-charm here since
+   CSS :hover matches an ancestor whenever any descendant is hovered. */
 .hc-charm {
   position: relative;
-  z-index: var(--hc-z, 1);
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: none;
-  border: 0;
-  padding: 0;
-  font: inherit;
-  color: inherit;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.hc-charm:hover,
-.hc-charm:focus-visible {
-  z-index: 8;
-}
-
-.hc-charm:focus-visible {
-  outline: 2px solid var(--rose);
-  outline-offset: 8px;
-  border-radius: 14px;
+  /* the charm's own box is a tall rectangle (chain height + bubble), and an
+     element blocks clicks across its whole box by default even where it has
+     no visible content — with charms hanging at very different lengths but
+     overlapping x-ranges, that empty chain-gap space was stealing clicks
+     meant for a neighboring charm's bubble rendered underneath it. Make the
+     wrapper click-through and re-enable it only on the actual button.
+     Deliberately no z-index here (stays auto): with position:absolute but
+     z-index:auto, .hc-charm does NOT open its own stacking context, so its
+     children fall through to .hc-cluster's shared context instead. That's
+     what lets .hc-chain (never positioned, so it always paints in the
+     "non-positioned content" step) land behind every .hc-pair bubble
+     (positioned, so it paints in the later "positioned descendants" step)
+     across ALL charms — not just within its own. If .hc-charm carried its
+     own z-index, each charm would instead resolve chain-vs-bubble locally,
+     and a higher-stacked charm's chain could still out-rank a lower one's
+     bubble. */
+  pointer-events: none;
 }
 
 /* All charms hang from the same rail just under the section heading — only
@@ -156,15 +104,32 @@
   position: absolute;
   left: var(--hc-x, 50%);
   top: 0;
-  transform: translateX(-50%);
+  /* Sized as a % of .hc-cluster (its containing block) instead of a fixed
+     280px, so the bubble grows and shrinks in lockstep with --hc-x's own
+     percentage-based positions. Without this, the bubbles stayed a fixed
+     size while the gaps between them (percentages of a widening cluster)
+     grew with the window — matching proportions at any width now instead
+     of only at the one size this was tuned at. 280/1320 = the bubble's
+     original fixed width as a fraction of the cluster's own max-width. */
+  width: calc(21.2121% * var(--hc-scale, 1));
+  /* centered via margin, not transform: a `transform` on .hc-charm would
+     make it establish its own stacking context, trapping its chain vs its
+     own bubble's z-index comparison *inside* that one charm — which broke
+     cross-charm ordering (a later charm's whole DOM subtree, chain
+     included, would out-rank an earlier charm's bubble wherever they
+     crossed). Chains and bubbles then resolve directly in .hc-cluster's
+     shared stacking context, where every .hc-pair (z 2-4, positioned)
+     always outranks every .hc-chain (unpositioned) regardless of which
+     charm either belongs to. */
+  margin-left: calc(-10.6061% * var(--hc-scale, 1));
 }
 
 .hc-chain {
   display: flex;
   gap: 9px;
+  width: 100%;
   height: var(--hc-drop);
   align-items: flex-end;
-  justify-content: center;
 }
 
 .hc-strand {
@@ -184,23 +149,50 @@
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 80px);
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
+  /* each AI bubble's baked-in hanging loop sits at its own off-center spot
+     (next to the product photo or the text block, whichever is narrower)
+     — --hc-hook-x is that spot as a % of the bubble's own width (.hc-chain
+     is now the same width as the bubble, so this % means the same thing
+     for both), nudging the strand over so it lands on the loop instead of
+     open air. Scales correctly with the bubble because it's a % of the
+     same fluid width, not a fixed px offset. */
+  margin-left: calc(var(--hc-hook-x, 50%) - 3px);
 }
 
 .hc-charm:hover .hc-strand { opacity: 0.85; }
 
 .hc-pair {
   position: relative;
+  z-index: var(--hc-z, 1);
   display: flex;
+  width: 100%;
   margin-top: 2px;
+  pointer-events: auto;
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   transform-origin: top center;
-  transform: scale(var(--hc-scale, 1)) rotate(var(--hc-rot)) translateX(var(--hc-shift));
+  /* --hc-scale now lives in .hc-charm's own width instead of a transform
+     here, so the bubble's rendered size is fluid (see .hc-charm.hc-scatter) */
+  transform: translateX(var(--hc-shift));
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
+.hc-pair:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 8px;
+  border-radius: 14px;
+}
+
 .hc-charm:hover .hc-pair,
-.hc-charm:focus-visible .hc-pair {
-  transform: scale(var(--hc-scale, 1)) rotate(calc(var(--hc-rot) * 0.35)) translateX(var(--hc-shift)) translateY(-10px);
+.hc-pair:focus-visible {
+  z-index: 8;
+  transform: translateX(var(--hc-shift)) translateY(-10px);
 }
 
 /* hover glow — a pre-blurred layer whose OPACITY animates instead of an
@@ -210,11 +202,17 @@
 .hc-pair::before {
   content: '';
   position: absolute;
-  inset: -14px;
+  inset: -8px;
   z-index: -1;
   border-radius: 40px;
-  background: var(--rose);
-  filter: blur(20px);
+  /* against this near-black page, compositing a mid-tone rose at low
+     opacity always reads as a dark tinted rim — blend mode can't fix that
+     when the backdrop is already black (screen(black, x) == x, same as a
+     plain alpha composite). What actually reads as a light glow is a
+     genuinely bright color shown at higher opacity instead — a heavy blur
+     keeps that brightness from reading as a hard-edged rim. */
+  background: color-mix(in srgb, var(--rose) 75%, white);
+  filter: blur(28px);
   opacity: 0;
   transition: opacity 0.5s ease;
   will-change: opacity;
@@ -222,8 +220,8 @@
 }
 
 .hc-charm:hover .hc-pair::before,
-.hc-charm:focus-visible .hc-pair::before {
-  opacity: 0.35;
+.hc-pair:focus-visible::before {
+  opacity: 0.32;
 }
 
 .hc-bubble {
@@ -239,6 +237,55 @@
 }
 
 .hc-bubble.hc-pill { border-radius: 999px; padding: 24px 26px 24px 20px; }
+
+/* Whole pre-rendered bubble graphics (shape + product photo + copy baked
+   into one image) standing in for the usual CSS-built .hc-bubble. */
+.hc-ai-bubble {
+  display: block;
+  width: 100%;
+  max-width: none;
+  filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.52));
+}
+
+/* The shared hover glow is a plain rounded rectangle, sized to fit the CSS
+   .hc-bubble shape. These AI bubbles are single images with an irregular
+   speech-bubble silhouette inside a much larger rectangular frame, so that
+   same rectangle glow read as a big untamed halo — mask the glow with each
+   bubble's own alpha channel instead (set per-charm via --hc-ai-mask), so
+   it only glows where that bubble's artwork actually is. */
+.hc-charm-ai .hc-pair::before {
+  inset: -10px;
+  border-radius: 0;
+  mask-image: var(--hc-ai-mask);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: var(--hc-ai-mask);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+/* the bubble artwork itself renders stark white, which reads as a jarring
+   cutout against the page's warm cream/near-black palette — wash it with
+   the same warm tone as the heading text above ("Reach for what calls
+   you.", var(--primary)) via multiply blend, masked to the bubble's own
+   shape so only the artwork is tinted, not the space around it. Multiply
+   maps pure white -> exactly the tint color and leaves black untouched, so
+   the product photo and text stay legible while the white plastic warms up. */
+.hc-charm-ai .hc-pair::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--primary);
+  mix-blend-mode: multiply;
+  opacity: 0.4;
+  mask-image: var(--hc-ai-mask);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: var(--hc-ai-mask);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  pointer-events: none;
+}
 
 .hc-tail {
   position: absolute;
@@ -348,14 +395,31 @@
     position: static;
     left: auto;
     top: auto;
-    transform: none;
+    width: auto;
+    margin-left: 0;
+  }
+  /* the desktop scatter's fluid, %-of-cluster sizing (and the hook-x nudge
+     that's relative to it) only makes sense inside that absolute-position
+     layout — this stacked column goes back to one fixed comfortable size
+     for every bubble, and every chain drops straight down its own bubble's
+     center instead of carrying the desktop nudge over. */
+  .hc-pair {
+    width: auto;
+  }
+  .hc-ai-bubble {
+    width: 280px;
   }
   /* the desktop scatter layout uses long, varied chain lengths (--hc-drop)
      to hang bubbles from a shared top rail; that doesn't translate to a
      stacked mobile layout, so every chain collapses to one short length
      here instead of dragging hundreds of px of empty chain between items */
   .hc-chain {
+    width: auto;
     height: 34px;
+    justify-content: center;
+  }
+  .hc-strand {
+    margin-left: 0;
   }
 }
 

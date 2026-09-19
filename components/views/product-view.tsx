@@ -136,7 +136,7 @@ export function ProductView() {
                         setShowHint(false)
                       }}
                       data-cursor="hover"
-                      className={`min-w-11 border px-3 py-2 text-[0.7rem] uppercase tracking-[0.15em] transition-colors ${
+                      className={`min-h-11 min-w-11 border px-3 py-2.5 text-[0.7rem] uppercase tracking-[0.15em] transition-colors ${
                         size === s
                           ? 'border-rose bg-rose/10 text-primary'
                           : 'border-border text-silver hover:border-silver'
@@ -156,7 +156,7 @@ export function ProductView() {
                 <p className="mb-3 text-[0.65rem] uppercase tracking-[0.28em] text-muted-foreground">
                   Color{color ? ` · ${color}` : ''}
                 </p>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap">
                   {product.colors!.map((c) => (
                     <button
                       key={c.name}
@@ -166,16 +166,20 @@ export function ProductView() {
                       }}
                       data-cursor="hover"
                       aria-label={c.name}
-                      className={`h-8 w-8 rounded-full border-2 transition-all ${
-                        color === c.name
-                          ? 'border-rose scale-110'
-                          : 'border-transparent hover:border-silver/50'
-                      }`}
-                      style={{
-                        backgroundColor: c.hex,
-                        boxShadow: '0 0 0 1px rgba(255,255,255,0.18)',
-                      }}
-                    />
+                      className="flex h-11 w-11 items-center justify-center"
+                    >
+                      <span
+                        className={`h-8 w-8 rounded-full border-2 transition-all ${
+                          color === c.name
+                            ? 'border-rose scale-110'
+                            : 'border-transparent hover:border-silver/50'
+                        }`}
+                        style={{
+                          backgroundColor: c.hex,
+                          boxShadow: '0 0 0 1px rgba(255,255,255,0.18)',
+                        }}
+                      />
+                    </button>
                   ))}
                 </div>
               </div>

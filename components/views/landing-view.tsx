@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useStore } from '@/components/store'
+import { OrnateCross3D } from '@/components/ornate-cross-3d'
 import { EnterChrome } from '@/components/enter-chrome'
 import { playEnter } from '@/lib/sound'
 
@@ -10,6 +11,7 @@ const doorEase = [0.76, 0, 0.24, 1] as const
 
 const ARRIVE_MS = 900
 const OPEN_MS = 1600
+const DOOR_EDGE_PX = 42
 
 type Phase = 'idle' | 'arriving' | 'opening'
 
@@ -73,6 +75,7 @@ export function LandingView() {
         className="absolute inset-y-0 left-0 w-1/2 origin-left overflow-hidden"
         style={{
           boxShadow: 'inset -30px 0 60px -20px rgba(0,0,0,0.9)',
+          transformStyle: 'preserve-3d',
         }}
         initial={{ opacity: 0, y: 48 }}
         animate={{
@@ -92,6 +95,21 @@ export function LandingView() {
           draggable={false}
           className="absolute inset-y-0 left-0 h-full w-[200%] max-w-none object-cover"
         />
+        {/* Slab thickness on the free (right) edge — a real extruded 3D face,
+            not part of the flat image, so the door reads as solid rather
+            than a paper cutout as it swings past the viewer's eye-line */}
+        <div
+          aria-hidden
+          className="absolute inset-y-0 right-0"
+          style={{
+            width: DOOR_EDGE_PX,
+            transformOrigin: 'right center',
+            transform: 'rotateY(90deg)',
+            background:
+              'linear-gradient(to right, #070604 0%, #5a4626 34%, #241a0e 66%, #020201 100%)',
+            boxShadow: 'inset 0 0 26px rgba(0,0,0,0.9), 0 0 14px rgba(224,183,195,0.3)',
+          }}
+        />
       </motion.div>
       {/* Right door leaf */}
       <motion.div
@@ -99,6 +117,7 @@ export function LandingView() {
         className="absolute inset-y-0 right-0 w-1/2 origin-right overflow-hidden"
         style={{
           boxShadow: 'inset 30px 0 60px -20px rgba(0,0,0,0.9)',
+          transformStyle: 'preserve-3d',
         }}
         initial={{ opacity: 0, y: 48 }}
         animate={{
@@ -117,6 +136,19 @@ export function LandingView() {
           alt=""
           draggable={false}
           className="absolute inset-y-0 right-0 h-full w-[200%] max-w-none object-cover"
+        />
+        {/* Slab thickness on the free (left) edge */}
+        <div
+          aria-hidden
+          className="absolute inset-y-0 left-0"
+          style={{
+            width: DOOR_EDGE_PX,
+            transformOrigin: 'left center',
+            transform: 'rotateY(-90deg)',
+            background:
+              'linear-gradient(to left, #070604 0%, #5a4626 34%, #241a0e 66%, #020201 100%)',
+            boxShadow: 'inset 0 0 26px rgba(0,0,0,0.9), 0 0 14px rgba(224,183,195,0.3)',
+          }}
         />
       </motion.div>
 
@@ -158,20 +190,13 @@ export function LandingView() {
           style={{ width: 'clamp(220px, 40vw, 460px)', height: 'clamp(220px, 40vw, 460px)' }}
         >
           <span className="sr-only">Die Wölfin</span>
-          <motion.div
-            aria-hidden
-            className="h-full w-full"
-            animate={reducedMotion ? undefined : { y: [0, -14, 0] }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/logo-dark-cleaned-up.png"
-              alt=""
-              className="h-full w-full object-contain"
-              draggable={false}
+          <div aria-hidden className="h-full w-full">
+            <OrnateCross3D
+              className="h-full w-full"
+              speed={reducedMotion ? 0 : 0.25}
+              scale={1}
             />
-          </motion.div>
+          </div>
         </motion.h1>
 
         <motion.p
