@@ -110,7 +110,7 @@ export const PRODUCTS: Product[] = [
     category: 'Clothing',
     price: 560,
     image: '/images/p-bodysuit.png',
-    blurb: 'Sheer illusion tulle. For the ones who dare the light.',
+    blurb: 'Sheer illusion tulle. Boned for shape, not spectacle.',
     description:
       'Sheer illusion tulle body with floral lace appliqué placed by hand. Snap closure at the base, boned front panel for shape without a seam line. Reads as bare from a distance, as couture up close.',
     sizes: CLOTHING_SIZES,

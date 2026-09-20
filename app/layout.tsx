@@ -18,7 +18,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: 'Die Wölfin — Enter the Atelier',
   description:
-    'Die Wölfin is a dark, high-fashion house. Step through the doors into the closet and the shop. Provocative couture, leather, lace, and rare archive pieces.',
+    'Die Wölfin is a dark, high-fashion house. Step through the doors into the closet and the shop. Considered couture, leather, lace, and rare archive pieces.',
   generator: 'v0.app',
 }
 

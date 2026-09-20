@@ -58,7 +58,7 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground sm:flex-row sm:items-center">
-          <span>© MMXXVI Die Wölfin Maison. All rites reserved.</span>
+          <span>© MMXXVI Die Wölfin Maison. All rights reserved.</span>
           <span>Made after dark.</span>
         </div>
       </div>

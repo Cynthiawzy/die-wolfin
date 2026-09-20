@@ -2,7 +2,6 @@
 
 import { StoreProvider, useStore } from '@/components/store'
 import { CustomCursor } from '@/components/custom-cursor'
-import { SoundToggle } from '@/components/sound-toggle'
 import { TransitionCurtain } from '@/components/transition-curtain'
 import { SiteNav } from '@/components/site-nav'
 import { CartDrawer } from '@/components/cart-drawer'
@@ -35,7 +34,6 @@ export function Experience() {
   return (
     <StoreProvider>
       <CustomCursor />
-      <SoundToggle />
       <SiteNav />
       <ViewRouter />
       <CartDrawer />

@@ -5,7 +5,6 @@ import { motion } from 'framer-motion'
 import { useStore } from '@/components/store'
 import { OrnateCross3D } from '@/components/ornate-cross-3d'
 import { EnterChrome } from '@/components/enter-chrome'
-import { playEnter } from '@/lib/sound'
 
 const doorEase = [0.76, 0, 0.24, 1] as const
 
@@ -20,7 +19,6 @@ export function LandingView() {
   const [phase, setPhase] = useState<Phase>('idle')
 
   const enter = () => {
-    playEnter()
     if (reducedMotion) {
       navigate('closet')
       return
@@ -205,8 +203,8 @@ export function LandingView() {
           transition={{ duration: 1.2, delay: 1.3, ease: doorEase }}
           className="mt-6 max-w-md text-pretty text-sm leading-relaxed text-silver/80"
         >
-          Behind these doors: a wardrobe with teeth. Leather, lace, and the
-          things you were told not to want.
+          Behind these doors: leather, lace, and pieces that don't need
+          an introduction.
         </motion.p>
 
         <motion.div

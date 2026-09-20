@@ -84,9 +84,7 @@ export function ClosetView() {
       </section>
 
       {/* Category tiles — hanging display */}
-      <section id="shop-pieces" className="relative overflow-hidden py-28">
-        <div className="hc-wall hc-left" aria-hidden="true" />
-        <div className="hc-wall hc-right" aria-hidden="true" />
+      <section id="shop-pieces" className="relative overflow-hidden pt-28 pb-6">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <Reveal>
             <div className="mb-10 text-center">
@@ -100,8 +98,8 @@ export function ClosetView() {
           </Reveal>
         </div>
 
-        {/* full-bleed: the wall panels should reach the browser edges, not
-            stop at the max-w-7xl content column */}
+        {/* full-bleed: the backdrop photo should reach the browser edges,
+            not stop at the max-w-7xl content column */}
         <section className="hc-stage" aria-label="Category display">
           <div className="hc-cluster">
               <div

@@ -4,6 +4,42 @@
    the rest of the site's class names. */
 
 .hc-stage {
+  /* same 1320px cap .hc-cluster uses for its own width. This was briefly
+     switched to plain 100vw so the photo would reach the browser edges at
+     any width, but that decoupled its scale from the (still-capped) bubble
+     cluster: past 1320px the backdrop kept growing while every charm's
+     size and position froze, so the two drifted apart and charms near the
+     bottom stopped landing inside the photo the wider the window got.
+     Bubbles staying visually contained in the backdrop at every width
+     wins over the photo's own edges reaching the browser's — so back to
+     matching .hc-cluster's cap, which keeps every offset below in
+     lockstep with the charms again.
+     100vw, not 100%: min(1320px, 100%) LOOKS like a plain length (it
+     resolves to the same number 100% of the time, since .hc-stage is
+     always exactly viewport-width), but a bare 100% keeps CSS's <length-
+     percentage> type tagged as "contains a percentage" all the way through
+     every calc() built from it below — and background-position resolves
+     that tag using its own (positioning-area − image-size) × percentage
+     formula instead of treating the result as a fixed pixel offset from
+     the top, silently moving every vertical offset and mask stop below to
+     the wrong place (this took an actual measured pixel-sampled screenshot
+     to catch — the bubble-position and click-routing checks after every
+     edit couldn't, since none of them touch the photo's own vertical
+     placement). 100vw is a real <length>, not a <length-percentage>, so
+     it carries no such tag and every calc() below means exactly what its
+     ratio says. */
+  --hc-backdrop-w: min(1320px, 100vw);
+  /* zooms the backdrop photo in around its own center — its width and
+     (aspect-locked) height both grow by this factor — then background-
+     position-y below cancels the resulting downward half of that growth,
+     so the floor stays anchored where it already was and only the top
+     (the polka-dot walls, ceiling) extends further up. Rendering this
+     6% wider than --hc-backdrop-w also eats into the photo's own dark
+     margin outside the wall panels, which is why it's a modest factor
+     rather than a large one — much more and it starts cropping the walls
+     themselves at the edges instead of just their surrounding black. */
+  --hc-backdrop-zoom: 1.08;
+  --hc-backdrop-render-w: calc(var(--hc-backdrop-w) * var(--hc-backdrop-zoom));
   --hc-marble:
     radial-gradient(ellipse 60% 46% at 16% 10%, rgba(255, 255, 255, 0.65), transparent 60%),
     radial-gradient(ellipse 55% 42% at 84% 78%, rgba(88, 84, 78, 0.16), transparent 62%),
@@ -14,10 +50,18 @@
   --hc-ink: #1c1712;
 
   position: relative;
-  min-height: 1320px;
+  min-height: 1500px;
   overflow: hidden;
   display: flex;
-  align-items: center;
+  /* flex-start, not center: .hc-cluster's own height (1220px) plus this
+     padding already exceeds the old 1320px min-height on its own, so
+     center never actually did anything — until min-height grew to 1620px
+     to give the backdrop photo (below) room to sit lower without
+     being clipped. With center that slack would show up as equal padding
+     above AND below .hc-cluster, pushing every charm down the page; with
+     flex-start the extra room only ever appears below the (untouched)
+     cluster. */
+  align-items: flex-start;
   justify-content: center;
   padding: 48px 32px 76px;
   isolation: isolate;
@@ -27,7 +71,121 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 46% at 50% 18%, rgba(224, 183, 195, 0.07), transparent 72%);
+  /* the photographed set (polka-dot walls, chair, the woman by the right
+     wall) sized to the same 1320px cap as .hc-cluster and centered the same
+     way, so the backdrop's walls/figure stay in the same place relative to
+     the bubbles at any viewport width instead of drifting apart on
+     full-bleed .hc-stage's own (unconstrained) width. Nudged down from the
+     very top (rather than moving the bubbles, which are independently
+     tuned) so the room's floor/lights actually bracket the full charm
+     cluster instead of the lowest charms hanging out past the photo's
+     bottom edge; the offset is expressed as a fraction of --hc-backdrop-w
+     itself so it shrinks in lockstep with the photo below the 1320px cap
+     instead of staying a fixed px nudge while the photo shrinks around it.
+     Faded out well before the image's own bottom edge so it blends into
+     the page's plain --noir rather than ending in a visible seam. */
+  background-image:
+    radial-gradient(ellipse 60% 46% at 50% 18%, rgba(224, 183, 195, 0.07), transparent 72%),
+    url('/images/ChatGPT-polkadot-background.png');
+  background-repeat: no-repeat, no-repeat;
+  background-size: auto, var(--hc-backdrop-render-w) auto;
+  /* 0.317, not the 0.4 the un-zoomed photo used: with the image now
+     --hc-backdrop-zoom taller, placing its top this much higher keeps its
+     BOTTOM edge at the exact same stage position as before the zoom (the
+     two changes cancel out — see --hc-backdrop-zoom above) rather than
+     pushing the whole photo down further. */
+  background-position: center, center calc(var(--hc-backdrop-render-w) * 0.317);
+  /* the horizontal fade has to track the photo's own (now zoomed) edges —
+     which sit at 50% ± half of --hc-backdrop-render-w — not a fixed
+     percentage of .hc-stage's own full-bleed (viewport-wide) width, or the
+     fade band would drift away from the image edge as the window resizes
+     and leave the same hard cut it's meant to soften. The vertical fade
+     tracks the image's own top and bottom edges the same way, both now
+     expressed as fractions of --hc-backdrop-render-w instead of the old
+     un-zoomed --hc-backdrop-w: the top edge sits at the 0.317 offset above,
+     fading in over the next ~0.03 instead of snapping on abruptly wherever
+     it happens to cross a chain; the bottom edge sits at offset 0.317 +
+     the image's aspect-locked height (~0.721 of its own width) ≈ 1.038, so
+     the fade-out is centered there, completing at ≈1494px — inside
+     min-height's 1500px ceiling (see .hc-stage) by under 6px, deliberately
+     about as tight as that ceiling can go without clipping the fade's own
+     tail, so there's next to no empty .hc-stage box left between the photo
+     fading out and the footer below. */
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--hc-backdrop-render-w) * 0.317),
+      black calc(var(--hc-backdrop-render-w) * 0.347),
+      black calc(var(--hc-backdrop-render-w) * 0.978),
+      transparent calc(var(--hc-backdrop-render-w) * 1.048)
+    ),
+    linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(50% - (min(660px, 50%) * var(--hc-backdrop-zoom))),
+      black calc(50% - (min(660px, 50%) * var(--hc-backdrop-zoom)) + 48px),
+      black calc(50% + (min(660px, 50%) * var(--hc-backdrop-zoom)) - 48px),
+      transparent calc(50% + (min(660px, 50%) * var(--hc-backdrop-zoom))),
+      transparent 100%
+    );
+  mask-composite: intersect;
+  -webkit-mask-image:
+    linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent calc(var(--hc-backdrop-render-w) * 0.317),
+      black calc(var(--hc-backdrop-render-w) * 0.347),
+      black calc(var(--hc-backdrop-render-w) * 0.978),
+      transparent calc(var(--hc-backdrop-render-w) * 1.048)
+    ),
+    linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(50% - (min(660px, 50%) * var(--hc-backdrop-zoom))),
+      black calc(50% - (min(660px, 50%) * var(--hc-backdrop-zoom)) + 48px),
+      black calc(50% + (min(660px, 50%) * var(--hc-backdrop-zoom)) - 48px),
+      transparent calc(50% + (min(660px, 50%) * var(--hc-backdrop-zoom))),
+      transparent 100%
+    );
+  -webkit-mask-composite: source-in;
+  pointer-events: none;
+}
+
+/* a second, blurred copy of the same photo laid over the top of the crisp
+   one above — opaque (so only the blur shows) right where the photo meets
+   the heading and chains above it, fading down to fully transparent
+   (revealing the sharp ::before beneath) well before the room's detail —
+   the walls' dot pattern, the chair, the hanging charms — actually
+   matters. Softens the hand-off from the heading's crisp type into the
+   photo instead of the photo snapping into full sharpness the instant its
+   own fade-in (in ::before) finishes. z-index:auto on both, so paint order
+   alone decides layering: ::after is generated after ::before, so it
+   paints on top of it — no z-index needed to put the blur above the sharp
+   copy it's meant to obscure. Still safely below .hc-cluster's charms,
+   which sit in their own z-index:1 stacking context regardless of DOM
+   order (see .hc-cluster). */
+.hc-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/images/ChatGPT-polkadot-background.png');
+  background-repeat: no-repeat;
+  background-size: var(--hc-backdrop-render-w) auto;
+  background-position: center calc(var(--hc-backdrop-render-w) * 0.317);
+  filter: blur(20px);
+  mask-image: linear-gradient(
+    to bottom,
+    black 0,
+    black calc(var(--hc-backdrop-render-w) * 0.4),
+    transparent calc(var(--hc-backdrop-render-w) * 0.55)
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0,
+    black calc(var(--hc-backdrop-render-w) * 0.4),
+    transparent calc(var(--hc-backdrop-render-w) * 0.55)
+  );
   pointer-events: none;
 }
 
@@ -37,6 +195,15 @@
   bottom: 0;
   width: 22%;
   background-color: color-mix(in srgb, var(--charcoal) 24%, transparent);
+  /* scattered polka dots, like a photographed backdrop rather than a flat
+     panel — three overlaid dot grids at different sizes/spacings/offsets
+     so the pattern reads as irregular scatter instead of one uniform grid */
+  background-image:
+    radial-gradient(circle, rgba(0, 0, 0, 0.5) 0 9px, transparent 10px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.42) 0 5px, transparent 6px),
+    radial-gradient(circle, rgba(0, 0, 0, 0.32) 0 3px, transparent 4px);
+  background-size: 96px 96px, 64px 64px, 44px 44px;
+  background-position: 0 0, 30px 46px, 58px 12px;
   /* fade the inner edge (facing the bubbles) and top/bottom to transparent,
      so this reads as ambient texture bleeding into the dark page rather than
      a hard-edged grey panel sitting on top of it */
@@ -133,11 +300,19 @@
 }
 
 .hc-strand {
-  width: 6px;
+  width: 10px;
   height: 100%;
   opacity: 0.55;
-  background-image: radial-gradient(circle, var(--silver) 0 3.2px, transparent 3.6px);
-  background-size: 12px 15px;
+  /* alternating vertical/horizontal oval rings, like a real chain's twisted
+     links — an SVG pattern rather than a repeating radial-gradient dot,
+     since a dot pattern (the previous approach) reads as a beaded string,
+     not a chain: no individual links, no sense of them threading through
+     one another. Rings (stroked, unfilled), not filled ovals, so each link
+     reads as a loop of wire rather than a solid bead. --silver is #bfbfbf
+     (app/globals.css) hardcoded as %23bfbfbf: a data URI is static markup,
+     not live CSS, so it can't reference a custom property. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 18'%3E%3Cellipse cx='5' cy='4.5' rx='2.5' ry='4' fill='none' stroke='%23bfbfbf' stroke-width='1.3'/%3E%3Cellipse cx='5' cy='13.5' rx='4' ry='2.5' fill='none' stroke='%23bfbfbf' stroke-width='1.3'/%3E%3C/svg%3E");
+  background-size: 10px 18px;
   background-repeat: repeat-y;
   background-position: center top;
   transition: opacity 0.4s ease;
@@ -155,8 +330,10 @@
      is now the same width as the bubble, so this % means the same thing
      for both), nudging the strand over so it lands on the loop instead of
      open air. Scales correctly with the bubble because it's a % of the
-     same fluid width, not a fixed px offset. */
-  margin-left: calc(var(--hc-hook-x, 50%) - 3px);
+     same fluid width, not a fixed px offset. -5px, half this strand's own
+     10px width, keeps it centered the same way the old -3px did for the
+     old 6px width. */
+  margin-left: calc(var(--hc-hook-x, 50%) - 5px);
 }
 
 .hc-charm:hover .hc-strand { opacity: 0.85; }
@@ -382,6 +559,61 @@
 
 @media (max-width: 760px) {
   .hc-stage { padding: 90px 16px 56px; min-height: auto; }
+  /* the desktop backdrop photo is a fixed-aspect-ratio room scene sized for
+     the scatter layout — stretched over the stacked mobile column (much
+     taller than wide) it would only ever cover the first charm before
+     running out of height. Use the portrait-cropped mobile version instead:
+     full stage width, auto height, faded out over its own last ~20% so it
+     hands off to the plain glow beneath rather than ending in a hard edge.
+     This "-taller" crop (724×2172, a 3:1 portrait) is the second of two
+     rounds of "make the mobile photo more elongated" — the first ("-tall",
+     793×1983, 2.5:1) fully covered Jacket/One Piece/Tops and mostly Sets;
+     this one reaches further still, at its own native aspect ratio with no
+     stretching: stretching a squarer crop to reach this far down turned its
+     circular polka dots visibly oval and its chair/figure noticeably
+     elongated, which a from-the-start-taller photo avoids entirely. Even
+     at 3:1 it's still short of the full stacked column's fixed height at
+     narrower phone widths (charm sizing doesn't scale down below the
+     760px breakpoint, but this image's rendered height does scale with
+     viewport width) — so Bottoms lands right at or just past this photo's
+     own fade-out depending on the phone. 100vw, not a plain percentage:
+     this element's own width is what the ratios below need to track, and
+     only a LENGTH does that in a calc() — a percentage here would resolve
+     through the unrelated background-position formula instead (see the
+     equivalent desktop comment on --hc-backdrop-w). */
+  .hc-stage::before {
+    background-image:
+      radial-gradient(ellipse 60% 46% at 50% 18%, rgba(224, 183, 195, 0.07), transparent 72%),
+      url('/images/ChatGPT-polkadot-background-mobile-taller.png');
+    background-repeat: no-repeat, no-repeat;
+    background-size: auto, 100vw auto;
+    background-position: center, top center;
+    mask-image: linear-gradient(
+      to bottom,
+      black 0,
+      black calc(100vw * 2.4),
+      transparent calc(100vw * 3.0)
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black 0,
+      black calc(100vw * 2.4),
+      transparent calc(100vw * 3.0)
+    );
+  }
+  /* same blurred-copy-on-top technique as the desktop ::after (see its
+     comment) — softens the hand-off from the heading into the photo,
+     which starts right at the top of .hc-stage here (no offset, unlike
+     desktop) so the blurred layer's own fade zone starts at 0 too. */
+  .hc-stage::after {
+    background-image: url('/images/ChatGPT-polkadot-background-mobile-taller.png');
+    background-repeat: no-repeat;
+    background-size: 100vw auto;
+    background-position: top center;
+    filter: blur(14px);
+    mask-image: linear-gradient(to bottom, black 0, black calc(100vw * 0.15), transparent calc(100vw * 0.32));
+    -webkit-mask-image: linear-gradient(to bottom, black 0, black calc(100vw * 0.15), transparent calc(100vw * 0.32));
+  }
   .hc-cluster {
     position: static;
     width: auto;

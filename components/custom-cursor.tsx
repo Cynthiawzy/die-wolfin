@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { useStore } from '@/components/store'
-import { playHover } from '@/lib/sound'
 
 /**
  * Custom cursor: a small rose dot with a trailing ring that expands over
@@ -13,7 +12,6 @@ export function CustomCursor() {
   const { reducedMotion } = useStore()
   const dotRef = useRef<HTMLDivElement>(null)
   const ringRef = useRef<HTMLDivElement>(null)
-  const wasActive = useRef(false)
   const [enabled, setEnabled] = useState(false)
   const [active, setActive] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -39,8 +37,6 @@ export function CustomCursor() {
       const nextActive = !!el?.closest(
         'button, a, [role="button"], [data-cursor="hover"]',
       )
-      if (nextActive && !wasActive.current) playHover()
-      wasActive.current = nextActive
       setActive(nextActive)
     }
 

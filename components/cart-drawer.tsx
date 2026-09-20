@@ -54,8 +54,7 @@ export function CartDrawer() {
               <div className="flex flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
                 <p className="font-serif text-xl text-silver">Nothing chosen yet.</p>
                 <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-                  The wardrobe waits behind the doors. Take something that
-                  frightens you a little.
+                  The wardrobe waits behind the doors.
                 </p>
               </div>
             ) : (
@@ -151,10 +150,10 @@ export function CartDrawer() {
                   </span>
                 </div>
                 <button className="group relative w-full overflow-hidden border border-rose/60 bg-rose py-4 text-[0.72rem] font-semibold uppercase tracking-[0.3em] text-accent-foreground transition-colors">
-                  <span className="relative z-10">Proceed to Ritual</span>
+                  <span className="relative z-10">Checkout</span>
                 </button>
                 <p className="mt-3 text-center text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-                  Shipping &amp; taxes divined at checkout
+                  Shipping &amp; taxes calculated at checkout
                 </p>
               </div>
             )}
