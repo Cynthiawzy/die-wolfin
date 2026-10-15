@@ -52,11 +52,6 @@ export function ClosetView() {
           }}
         />
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 sm:px-8">
-          <Reveal>
-            <p className="mb-4 text-[0.65rem] uppercase tracking-[0.4em] text-rose/90">
-              The Shop
-            </p>
-          </Reveal>
           <Reveal delay={0.1}>
             <h1 className="max-w-4xl font-serif text-[clamp(2.75rem,9vw,7rem)] leading-[0.9] tracking-tight text-primary">
               Dress like the
