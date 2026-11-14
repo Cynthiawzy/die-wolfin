@@ -5,17 +5,19 @@ import { Plus } from 'lucide-react'
 import { useStore } from '@/components/store'
 import { Reveal } from '@/components/reveal'
 import { FramedProduct } from '@/components/framed-product'
-import {
-  FILTERS,
-  PRODUCTS,
-  filterProducts,
-  formatPrice,
-} from '@/lib/products'
+import { FILTERS, filterProducts, formatPrice } from '@/lib/products'
 import { cn } from '@/lib/utils'
 
 export function ShopView() {
-  const { filter, setFilter, addToCart, viewProduct, reducedMotion } = useStore()
-  const products = filterProducts(PRODUCTS, filter)
+  const {
+    filter,
+    setFilter,
+    addToCart,
+    viewProduct,
+    reducedMotion,
+    products: allProducts,
+  } = useStore()
+  const products = filterProducts(allProducts, filter)
 
   return (
     <div className="mx-auto max-w-7xl px-5 pb-28 pt-28 sm:px-8 sm:pt-32">

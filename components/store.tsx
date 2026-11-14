@@ -9,15 +9,15 @@ import {
   useRef,
   useState,
 } from 'react'
-import type { FilterKey, Product } from '@/lib/products'
+import { getProduct as findProduct, type FilterKey, type Product } from '@/lib/products'
 
 export type View = 'landing' | 'closet' | 'shop' | 'product'
 
-export type CartOptions = { size?: string; color?: string }
+export type CartOptions = { size?: string }
 type CartLine = { product: Product; qty: number } & CartOptions
 
 function lineKey(id: string, opts?: CartOptions) {
-  return `${id}__${opts?.size ?? ''}__${opts?.color ?? ''}`
+  return `${id}__${opts?.size ?? ''}`
 }
 
 type StoreValue = {
@@ -30,8 +30,10 @@ type StoreValue = {
   setFilter: (f: FilterKey) => void
   goToShop: (f?: FilterKey) => void
 
+  products: Product[]
   selectedProductId: string | null
   viewProduct: (id: string) => void
+  getProduct: (id: string) => Product | undefined
 
   cart: CartLine[]
   cartCount: number
@@ -60,7 +62,13 @@ export function usePrefersReducedMotion(): boolean {
 
 const TRANSITION_MS = 800
 
-export function StoreProvider({ children }: { children: React.ReactNode }) {
+export function StoreProvider({
+  children,
+  products,
+}: {
+  children: React.ReactNode
+  products: Product[]
+}) {
   const reducedMotion = usePrefersReducedMotion()
   const [view, setView] = useState<View>('landing')
   const [transitioning, setTransitioning] = useState(false)
@@ -115,6 +123,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       navigate('product')
     },
     [navigate],
+  )
+
+  const getProduct = useCallback(
+    (id: string) => findProduct(products, id),
+    [products],
   )
 
   const addToCart = useCallback((p: Product, options?: CartOptions) => {
@@ -174,8 +187,10 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     filter,
     setFilter,
     goToShop,
+    products,
     selectedProductId,
     viewProduct,
+    getProduct,
     cart,
     cartCount,
     subtotal,

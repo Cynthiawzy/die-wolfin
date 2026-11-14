@@ -1,10 +1,6 @@
 'use client'
 
-import { useStore } from '@/components/store'
-
 export function SiteFooter() {
-  const { navigate, viewProduct } = useStore()
-
   return (
     <footer className="dot-texture border-t border-border bg-[#0a0a0a]">
       <div className="mx-auto max-w-7xl px-5 py-16 sm:px-8">
@@ -14,8 +10,7 @@ export function SiteFooter() {
               Die Wölfin
             </p>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              A dark couture house. Everything made in small numbers, then
-              never again. Join the list — we only whisper.
+              Join the list for updates on new pieces and restocks.
             </p>
             <form
               onSubmit={(e) => e.preventDefault()}
@@ -37,49 +32,18 @@ export function SiteFooter() {
             </form>
           </div>
 
-          <div className="grid grid-cols-2 gap-10 sm:grid-cols-3">
-            <FootCol title="Rooms">
-              <FootLink onClick={() => viewProduct('corset')}>Clothing</FootLink>
-              <FootLink onClick={() => viewProduct('moto-jacket')}>
-                Outerwear
-              </FootLink>
-              <FootLink onClick={() => viewProduct('slip-dress')}>On Sale</FootLink>
-            </FootCol>
-            <FootCol title="House">
-              <FootLink onClick={() => navigate('closet')}>The Shop</FootLink>
-              <FootLink onClick={() => navigate('landing')}>The Doors</FootLink>
-            </FootCol>
-            <FootCol title="Care">
-              <FootLink>Shipping</FootLink>
-              <FootLink>Returns</FootLink>
-              <FootLink>Contact</FootLink>
-            </FootCol>
-          </div>
+          <ul className="flex flex-col gap-2.5 sm:flex-row sm:gap-8">
+            <FootLink>Shipping</FootLink>
+            <FootLink>Returns</FootLink>
+            <FootLink>Contact</FootLink>
+          </ul>
         </div>
 
-        <div className="mt-14 flex flex-col items-start justify-between gap-3 border-t border-border pt-6 text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground sm:flex-row sm:items-center">
+        <div className="mt-14 border-t border-border pt-6 text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
           <span>© MMXXVI Die Wölfin Maison. All rights reserved.</span>
-          <span>Made after dark.</span>
         </div>
       </div>
     </footer>
-  )
-}
-
-function FootCol({
-  title,
-  children,
-}: {
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <div>
-      <p className="mb-4 text-[0.65rem] uppercase tracking-[0.28em] text-silver">
-        {title}
-      </p>
-      <ul className="flex flex-col gap-2.5">{children}</ul>
-    </div>
   )
 }
 

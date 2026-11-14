@@ -5,14 +5,13 @@ import { motion } from 'framer-motion'
 import { ArrowLeft, Plus } from 'lucide-react'
 import { useStore } from '@/components/store'
 import { Reveal } from '@/components/reveal'
-import { getProduct, formatPrice } from '@/lib/products'
+import { formatPrice } from '@/lib/products'
 
 export function ProductView() {
-  const { selectedProductId, navigate, addToCart } = useStore()
+  const { selectedProductId, navigate, addToCart, getProduct } = useStore()
   const product = selectedProductId ? getProduct(selectedProductId) : undefined
 
   const [size, setSize] = useState<string | null>(null)
-  const [color, setColor] = useState<string | null>(null)
   const [showHint, setShowHint] = useState(false)
 
   if (!product) {
@@ -33,8 +32,7 @@ export function ProductView() {
 
   const price = product.salePrice ?? product.price
   const needsSize = !!product.sizes?.length
-  const needsColor = !!product.colors?.length
-  const ready = (!needsSize || size) && (!needsColor || color)
+  const ready = !needsSize || size
 
   const handleAddToCart = () => {
     if (!ready) {
@@ -43,7 +41,6 @@ export function ProductView() {
     }
     addToCart(product, {
       size: size ?? undefined,
-      color: color ?? undefined,
     })
   }
 
@@ -150,42 +147,6 @@ export function ProductView() {
             </Reveal>
           )}
 
-          {needsColor && (
-            <Reveal delay={0.2}>
-              <div className="mt-7">
-                <p className="mb-3 text-[0.65rem] uppercase tracking-[0.28em] text-muted-foreground">
-                  Color{color ? ` · ${color}` : ''}
-                </p>
-                <div className="flex flex-wrap">
-                  {product.colors!.map((c) => (
-                    <button
-                      key={c.name}
-                      onClick={() => {
-                        setColor(c.name)
-                        setShowHint(false)
-                      }}
-                      data-cursor="hover"
-                      aria-label={c.name}
-                      className="flex h-11 w-11 items-center justify-center"
-                    >
-                      <span
-                        className={`h-8 w-8 rounded-full border-2 transition-all ${
-                          color === c.name
-                            ? 'border-rose scale-110'
-                            : 'border-transparent hover:border-silver/50'
-                        }`}
-                        style={{
-                          backgroundColor: c.hex,
-                          boxShadow: '0 0 0 1px rgba(255,255,255,0.18)',
-                        }}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-          )}
-
           <Reveal delay={0.25}>
             <motion.button
               onClick={handleAddToCart}
@@ -198,9 +159,7 @@ export function ProductView() {
             </motion.button>
             {showHint && (
               <p className="mt-3 text-[0.7rem] uppercase tracking-[0.2em] text-rose">
-                {needsSize && !size
-                  ? 'Select a size to continue.'
-                  : 'Select a color to continue.'}
+                Select a size to continue.
               </p>
             )}
           </Reveal>

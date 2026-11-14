@@ -3,6 +3,126 @@
    (imported once here), not Tailwind utilities, and need to stay clear of
    the rest of the site's class names. */
 
+/* Category grid — client-requested redesign replacing the hanging-from-
+   chains scatter display below with a plain, paired 2-column grid (one
+   unpaired item centered on its own row), used identically on desktop and
+   mobile rather than switching layouts at a breakpoint. */
+.hc-grid-stage {
+  padding: 24px 20px 72px;
+}
+
+.hc-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px 24px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* the odd one out (5th item) spans both columns and centers itself at
+   roughly one column's width, rather than stretching full-width — matches
+   the reference, where the unpaired bubble reads as the same size as its
+   paired siblings, just alone on its row. Compound selector (not just
+   .hc-grid-item-wide alone), so this width reliably wins over
+   .hc-grid-item's own width:100% below regardless of source order — two
+   single-class selectors of equal specificity would otherwise let
+   whichever is declared later in the file win, which is exactly the bug
+   this caused the first time (.hc-grid-item's width:100% came later and
+   silently overrode this one, leaving the "wide" item full-width instead
+   of one column wide). */
+.hc-grid-item.hc-grid-item-wide {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: calc(50% - 12px);
+}
+
+@media (max-width: 480px) {
+  /* below ~480px, half of a 2-column row gets too narrow for the baked-in
+     label text in these bubble images to stay legible — collapse to one
+     column there specifically, not as a general mobile fallback (the
+     client's ask was for mobile to otherwise match desktop's paired grid,
+     unlike the old chain layout's separate stacked-list treatment). */
+  .hc-grid {
+    grid-template-columns: 1fr;
+  }
+  .hc-grid-item.hc-grid-item-wide {
+    width: 100%;
+  }
+}
+
+.hc-grid-item {
+  position: relative;
+  display: block;
+  /* lets .hc-heading-label size itself off this button's own rendered
+     width (cqw units) instead of the viewport, so the overlaid text scales
+     in lockstep with the bubble image at any breakpoint or --hc-item-scale. */
+  container-type: inline-size;
+  /* --hc-item-scale (set per-button inline, in closet-view) shrinks the
+     whole button — not just the <img> inside it — so its hover-glow
+     pseudo-element (sized off the button's own box, not the image's)
+     shrinks right along with it. Scaling only the image and leaving the
+     button at full column width would stretch the glow's mask to a wider
+     box than the now-smaller visible bubble, smearing it out of
+     alignment. */
+  width: calc(100% * var(--hc-item-scale, 1));
+  margin: 0 auto;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hc-grid-item:hover,
+.hc-grid-item:focus-visible {
+  transform: translateY(-6px);
+}
+
+.hc-grid-item:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 8px;
+  border-radius: 24px;
+}
+
+/* same masked-glow technique as the old .hc-charm-ai .hc-pair::before (see
+   below) — a plain rounded-rect glow would spill past these bubbles'
+   irregular speech-bubble silhouette, so it's masked to the bubble's own
+   alpha channel via --hc-ai-mask (set per-button, inline, in closet-view). */
+.hc-grid-item::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  z-index: -1;
+  background: color-mix(in srgb, var(--rose) 75%, white);
+  filter: blur(28px);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  will-change: opacity;
+  pointer-events: none;
+  mask-image: var(--hc-ai-mask);
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: var(--hc-ai-mask);
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.hc-grid-item:hover::before,
+.hc-grid-item:focus-visible::before {
+  opacity: 0.32;
+}
+
+/* ---- superseded: the hanging-from-chains scatter display ----
+   Everything below (from .hc-stage down through .hc-chain/.hc-strand) was
+   the previous category display — charms hanging at different chain
+   lengths from a shared top rail, scattered by absolute position rather
+   than flowed in a grid. No longer rendered (closet-view.tsx now renders
+   .hc-grid-stage/.hc-grid above instead); left in place rather than
+   deleted in case this direction comes back. */
 .hc-stage {
   --hc-marble:
     radial-gradient(ellipse 60% 46% at 16% 10%, rgba(255, 255, 255, 0.65), transparent 60%),
@@ -271,6 +391,37 @@
   filter: drop-shadow(0 20px 32px rgba(0, 0, 0, 0.52));
 }
 
+/* Real text standing in for a baked-in heading on three of the five bubble
+   images — those three generated with an uneven letter baseline (a common
+   AI-image-gen flaw), which pixel-editing the raster couldn't cleanly fix.
+   Position (--hc-label-x/-y, the heading's old center) and size
+   (--hc-label-size) are set per-bubble inline since each source image
+   places its text differently; cqw ties the size to this button's own
+   rendered width (see .hc-grid-item's container-type) so it scales with
+   the bubble instead of the viewport. */
+.hc-heading-label {
+  position: absolute;
+  left: var(--hc-label-x);
+  top: var(--hc-label-y);
+  transform: translate(-50%, -50%);
+  font-family: var(--font-serif);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: #0c0c0a;
+  white-space: nowrap;
+  pointer-events: none;
+  font-size: var(--hc-label-size);
+}
+
+/* The five grid bubble images are independently-generated canvases with
+   different aspect ratios — Tops/Jacket/Sets are landscape (~1.5:1), but
+   One Piece and Bottoms are nearly square (~1.05:1 and ~1.04:1). At the
+   same column width that makes the squarer two visibly taller/larger than
+   the rest, which --hc-item-scale on .hc-grid-item itself (not here —
+   scaling the button, not just the image, keeps its glow pseudo-element in
+   sync too) corrects so every bubble reads at roughly the same height. */
+
 /* The shared hover glow is a plain rounded rectangle, sized to fit the CSS
    .hc-bubble shape. These AI bubbles are single images with an irregular
    speech-bubble silhouette inside a much larger rectangular frame, so that
@@ -430,7 +581,14 @@
   .hc-pair {
     width: auto;
   }
-  .hc-ai-bubble {
+  /* scoped to the old scatter layout's own button (.hc-pair) — .hc-ai-bubble
+     is also the class on the current grid layout's image, which needs to
+     stay at its natural 100%-of-button width here, not this layout's fixed
+     280px; a bare `.hc-ai-bubble` selector caught both and silently
+     shrank the grid images out of sync with their (unfixed-width) button,
+     throwing off anything positioned as a % of the button like
+     .hc-heading-label. */
+  .hc-pair .hc-ai-bubble {
     width: 280px;
   }
   /* the desktop scatter layout uses long, varied chain lengths (--hc-drop)

@@ -104,7 +104,7 @@ export function LandingView() {
             transformOrigin: 'right center',
             transform: 'rotateY(90deg)',
             background:
-              'linear-gradient(to right, #070604 0%, #5a4626 34%, #241a0e 66%, #020201 100%)',
+              'linear-gradient(to right, #030405 0%, #141c1f 40%, #0a1012 70%, #020203 100%)',
             boxShadow: 'inset 0 0 26px rgba(0,0,0,0.9), 0 0 14px rgba(224,183,195,0.3)',
           }}
         />
@@ -144,7 +144,7 @@ export function LandingView() {
             transformOrigin: 'left center',
             transform: 'rotateY(-90deg)',
             background:
-              'linear-gradient(to left, #070604 0%, #5a4626 34%, #241a0e 66%, #020201 100%)',
+              'linear-gradient(to left, #030405 0%, #141c1f 40%, #0a1012 70%, #020203 100%)',
             boxShadow: 'inset 0 0 26px rgba(0,0,0,0.9), 0 0 14px rgba(224,183,195,0.3)',
           }}
         />
@@ -175,9 +175,9 @@ export function LandingView() {
           initial={{ opacity: 0, y: 14, letterSpacing: '0.2em' }}
           animate={{ opacity: 1, y: 0, letterSpacing: '0.35em' }}
           transition={{ duration: 1.2, delay: 0.8, ease: doorEase }}
-          className="mb-5 text-[0.65rem] uppercase tracking-[0.35em] text-rose/90"
+          className="mb-5 font-serif text-xl uppercase tracking-[0.35em] text-primary sm:text-2xl"
         >
-          Maison Couture · Est. MMXV
+          Die Wölfin
         </motion.p>
 
         <motion.h1
@@ -196,16 +196,6 @@ export function LandingView() {
             />
           </div>
         </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, delay: 1.3, ease: doorEase }}
-          className="mt-6 max-w-md text-pretty text-sm leading-relaxed text-silver/80"
-        >
-          Behind these doors: leather, lace, and pieces that don't need
-          an introduction.
-        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 16 }}

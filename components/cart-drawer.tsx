@@ -62,12 +62,10 @@ export function CartDrawer() {
                 <ul className="flex flex-col divide-y divide-border">
                   {cart.map((line) => {
                     const unit = line.product.salePrice ?? line.product.price
-                    const variant = [line.size, line.color]
-                      .filter(Boolean)
-                      .join(' · ')
+                    const variant = line.size ?? ''
                     return (
                       <li
-                        key={`${line.product.id}-${line.size ?? ''}-${line.color ?? ''}`}
+                        key={`${line.product.id}-${line.size ?? ''}`}
                         className="flex gap-4 py-5"
                       >
                         <div className="h-24 w-20 shrink-0 overflow-hidden bg-charcoal">

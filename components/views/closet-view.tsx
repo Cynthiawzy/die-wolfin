@@ -8,14 +8,6 @@ import { Reveal } from '@/components/reveal'
 import { EnterChrome } from '@/components/enter-chrome'
 import './closet-charms.css'
 
-function Chain({ drop }: { drop: number }) {
-  return (
-    <span className="hc-chain" aria-hidden="true" style={{ ['--hc-drop' as string]: `${drop}px` }}>
-      <span className="hc-strand" />
-    </span>
-  )
-}
-
 export function ClosetView() {
   const { viewProduct } = useStore()
 
@@ -54,18 +46,10 @@ export function ClosetView() {
         <div className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 sm:px-8">
           <Reveal delay={0.1}>
             <h1 className="max-w-4xl font-serif text-[clamp(2.75rem,9vw,7rem)] leading-[0.9] tracking-tight text-primary">
-              Dress like the
-              <br />
-              rumour they whisper.
+              The Collection
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="mt-6 max-w-lg text-pretty text-base leading-relaxed text-silver/80">
-              A wardrobe assembled for after dark — pieces that hang heavy,
-              catch the light, and refuse to apologise.
-            </p>
-          </Reveal>
-          <Reveal delay={0.3}>
             <EnterChrome
               label="Browse the pieces"
               icon={<ArrowRight className="h-4 w-4" />}
@@ -80,174 +64,152 @@ export function ClosetView() {
 
       {/* Category tiles — hanging display */}
       <section id="shop-pieces" className="relative overflow-hidden pt-28 pb-6">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <Reveal>
-            <div className="mb-10 text-center">
-              <p className="mb-2 text-[0.65rem] uppercase tracking-[0.35em] text-muted-foreground">
-                The Hanging Rail
-              </p>
-              <h2 className="font-serif text-3xl tracking-tight text-primary sm:text-4xl">
-                Reach for what calls you.
-              </h2>
-            </div>
-          </Reveal>
+        {/* Client-requested redesign: a plain 2-column grid of speech
+            bubbles (paired, with the odd one out centered on its own row),
+            replacing the hanging-from-chains scatter display — on both
+            desktop and mobile, per the reference. Still using the current
+            five bubble images as placeholders; swap the src/alt pairs below
+            once the client's new artwork is in. */}
+        <div className="hc-grid-stage" aria-label="Category display">
+          <div className="hc-grid">
+            <button
+              onClick={() => viewProduct('corset')}
+              data-cursor="hover"
+              className="hc-grid-item"
+              style={
+                {
+                  ['--hc-ai-mask' as string]: "url('/images/Glossy Corset Tops Fashion Tag (transparent).png')",
+                  ['--hc-item-scale' as string]: 0.75,
+                } as CSSProperties
+              }
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/Glossy Corset Tops Fashion Tag (transparent).png"
+                alt="Tops"
+                className="hc-ai-bubble"
+                fetchPriority="high"
+              />
+            </button>
+
+            <button
+              onClick={() => viewProduct('slip-dress')}
+              data-cursor="hover"
+              className="hc-grid-item"
+              style={{ ['--hc-ai-mask' as string]: "url('/images/One Piece Fashion Sticker (no subtext).png')" } as CSSProperties}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/One Piece Fashion Sticker (no subtext).png"
+                alt="One Piece"
+                className="hc-ai-bubble"
+                fetchPriority="high"
+              />
+              <span
+                aria-hidden="true"
+                className="hc-heading-label"
+                style={
+                  {
+                    ['--hc-label-x' as string]: '71%',
+                    ['--hc-label-y' as string]: '56.8%',
+                    ['--hc-label-size' as string]: '7.5cqw',
+                  } as CSSProperties
+                }
+              >
+                One Piece
+              </span>
+            </button>
+
+            <button
+              onClick={() => viewProduct('moto-jacket')}
+              data-cursor="hover"
+              className="hc-grid-item"
+              style={{ ['--hc-ai-mask' as string]: "url('/images/Jackets_ Second Skin, Built to Armour (no subtext).png')" } as CSSProperties}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/Jackets_ Second Skin, Built to Armour (no subtext).png"
+                alt="Jackets"
+                className="hc-ai-bubble"
+                fetchPriority="high"
+              />
+              <span
+                aria-hidden="true"
+                className="hc-heading-label"
+                style={
+                  {
+                    ['--hc-label-x' as string]: '72.5%',
+                    ['--hc-label-y' as string]: '57.4%',
+                    ['--hc-label-size' as string]: '7.8cqw',
+                  } as CSSProperties
+                }
+              >
+                Jackets
+              </span>
+            </button>
+
+            <button
+              onClick={() => viewProduct('leather-pants')}
+              data-cursor="hover"
+              className="hc-grid-item"
+              style={
+                {
+                  ['--hc-ai-mask' as string]: "url('/images/Fashion BOTTOMS Tag with Flared Cargo Pants (no subtext).png')",
+                  ['--hc-item-scale' as string]: 0.69,
+                } as CSSProperties
+              }
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/Fashion BOTTOMS Tag with Flared Cargo Pants (no subtext).png"
+                alt="Bottoms"
+                className="hc-ai-bubble"
+                fetchPriority="high"
+              />
+              <span
+                aria-hidden="true"
+                className="hc-heading-label"
+                style={
+                  {
+                    ['--hc-label-x' as string]: '65%',
+                    ['--hc-label-y' as string]: '50%',
+                    ['--hc-label-size' as string]: '9cqw',
+                  } as CSSProperties
+                }
+              >
+                Bottoms
+              </span>
+            </button>
+
+            <button
+              onClick={() => viewProduct('bodysuit')}
+              data-cursor="hover"
+              className="hc-grid-item hc-grid-item-wide"
+              style={{ ['--hc-ai-mask' as string]: "url('/images/Gothic Fashion Sets Pendant Badge (no subtext).png')" } as CSSProperties}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/Gothic Fashion Sets Pendant Badge (no subtext).png"
+                alt="Sets"
+                className="hc-ai-bubble"
+                fetchPriority="high"
+              />
+              <span
+                aria-hidden="true"
+                className="hc-heading-label"
+                style={
+                  {
+                    ['--hc-label-x' as string]: '67.2%',
+                    ['--hc-label-y' as string]: '57.3%',
+                    ['--hc-label-size' as string]: '9.5cqw',
+                  } as CSSProperties
+                }
+              >
+                Sets
+              </span>
+            </button>
+          </div>
         </div>
-
-        {/* full-bleed: the backdrop photo should reach the browser edges,
-            not stop at the max-w-7xl content column */}
-        <section className="hc-stage" aria-label="Category display">
-          <div className="hc-cluster">
-              <div
-                className="hc-charm hc-scatter hc-charm-ai"
-                style={
-                  {
-                    '--hc-x': '31%',
-                    '--hc-rot': '-3deg',
-                    '--hc-shift': '2px',
-                    '--hc-z': 4,
-                    '--hc-scale': 1.62,
-                    '--hc-ai-mask': 'url(/images/ChatGPT-new-leather-jacket-bubble.png)',
-                    '--hc-hook-x': '32.26%',
-                  } as CSSProperties
-                }
-              >
-                <Chain drop={371} />
-                <button
-                  onClick={() => viewProduct('moto-jacket')}
-                  data-cursor="hover"
-                  className="hc-pair"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/ChatGPT-new-leather-jacket-bubble.png"
-                    alt="Jacket — Second skin, built to armour."
-                    className="hc-ai-bubble"
-                    fetchPriority="high"
-                  />
-                </button>
-              </div>
-
-              <div
-                className="hc-charm hc-scatter hc-charm-ai"
-                style={
-                  {
-                    '--hc-x': '59%',
-                    '--hc-rot': '-4deg',
-                    '--hc-shift': '4px',
-                    '--hc-z': 2,
-                    '--hc-scale': 1.39,
-                    '--hc-ai-mask': 'url(/images/ChatGPT-new-slip-dress-bubble.png)',
-                    '--hc-hook-x': '65.72%',
-                  } as CSSProperties
-                }
-              >
-                <Chain drop={487} />
-                <button
-                  onClick={() => viewProduct('slip-dress')}
-                  data-cursor="hover"
-                  className="hc-pair"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/ChatGPT-new-slip-dress-bubble.png"
-                    alt="One Piece — Nothing to coordinate."
-                    className="hc-ai-bubble"
-                    fetchPriority="high"
-                  />
-                </button>
-              </div>
-
-              <div
-                className="hc-charm hc-scatter hc-charm-ai"
-                style={
-                  {
-                    '--hc-x': '47%',
-                    '--hc-rot': '-3deg',
-                    '--hc-shift': '6px',
-                    '--hc-z': 3,
-                    '--hc-scale': 1.08,
-                    '--hc-ai-mask': 'url(/images/ChatGPT-new-corset-bubble.png)',
-                    '--hc-hook-x': '40.14%',
-                  } as CSSProperties
-                }
-              >
-                <Chain drop={662} />
-                <button
-                  onClick={() => viewProduct('corset')}
-                  data-cursor="hover"
-                  className="hc-pair"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/ChatGPT-new-corset-bubble.png"
-                    alt="Tops — Layers that hold their own."
-                    className="hc-ai-bubble"
-                    fetchPriority="high"
-                  />
-                </button>
-              </div>
-
-              <div
-                className="hc-charm hc-scatter hc-charm-ai"
-                style={
-                  {
-                    '--hc-x': '32%',
-                    '--hc-rot': '4deg',
-                    '--hc-shift': '-6px',
-                    '--hc-z': 3,
-                    '--hc-scale': 1.08,
-                    '--hc-ai-mask': 'url(/images/ChatGPT-new-sets-bubble.png)',
-                    '--hc-hook-x': '65.01%',
-                  } as CSSProperties
-                }
-              >
-                <Chain drop={756} />
-                <button
-                  onClick={() => viewProduct('bodysuit')}
-                  data-cursor="hover"
-                  className="hc-pair"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/ChatGPT-new-sets-bubble.png"
-                    alt="Sets — Coordinated pieces, worn as one."
-                    className="hc-ai-bubble"
-                    fetchPriority="high"
-                  />
-                </button>
-              </div>
-
-              <div
-                className="hc-charm hc-scatter hc-charm-ai"
-                style={
-                  {
-                    '--hc-x': '68%',
-                    '--hc-rot': '3deg',
-                    '--hc-shift': '-4px',
-                    '--hc-z': 3,
-                    '--hc-scale': 1.32,
-                    '--hc-ai-mask': 'url(/images/ChatGPT-new-pants-bubble.png)',
-                    '--hc-hook-x': '65.95%',
-                  } as CSSProperties
-                }
-              >
-                <Chain drop={733} />
-                <button
-                  onClick={() => viewProduct('leather-pants')}
-                  data-cursor="hover"
-                  className="hc-pair"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="/images/ChatGPT-new-pants-bubble.png"
-                    alt="Bottoms — Finishes the silhouette."
-                    className="hc-ai-bubble"
-                    fetchPriority="high"
-                  />
-                </button>
-              </div>
-            </div>
-          </section>
       </section>
     </div>
   )

@@ -10,6 +10,7 @@ import { ClosetView } from '@/components/views/closet-view'
 import { ShopView } from '@/components/views/shop-view'
 import { ProductView } from '@/components/views/product-view'
 import { SiteFooter } from '@/components/site-footer'
+import type { Product } from '@/lib/products'
 
 function ViewRouter() {
   const { view } = useStore()
@@ -30,9 +31,9 @@ function ViewRouter() {
   )
 }
 
-export function Experience() {
+export function Experience({ products }: { products: Product[] }) {
   return (
-    <StoreProvider>
+    <StoreProvider products={products}>
       <CustomCursor />
       <SiteNav />
       <ViewRouter />
