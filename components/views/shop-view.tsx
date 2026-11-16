@@ -23,16 +23,9 @@ export function ShopView() {
     <div className="mx-auto max-w-7xl px-5 pb-28 pt-28 sm:px-8 sm:pt-32">
       {/* Header */}
       <Reveal>
-        <p className="mb-3 text-[0.65rem] uppercase tracking-[0.4em] text-rose/90">
-          The Shop
-        </p>
         <h1 className="max-w-3xl font-serif text-[clamp(2.5rem,7vw,5rem)] leading-[0.92] tracking-tight text-primary">
-          Everything, laid bare.
+          The Shop
         </h1>
-        <p className="mt-5 max-w-lg text-pretty text-base leading-relaxed text-silver/80">
-          The complete collection. Filter by room, or take it all in at once —
-          each piece made in small, deliberate numbers.
-        </p>
       </Reveal>
 
       {/* Filters */}
@@ -168,9 +161,9 @@ export function ShopView() {
 
       {products.length === 0 && (
         <div className="py-32 text-center">
-          <p className="font-serif text-2xl text-silver">This room is empty.</p>
+          <p className="font-serif text-2xl text-silver">No pieces match this filter.</p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Nothing here for now. Try another door.
+            Try a different filter.
           </p>
         </div>
       )}

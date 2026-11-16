@@ -9,11 +9,25 @@ import { EnterChrome } from '@/components/enter-chrome'
 import './closet-charms.css'
 
 export function ClosetView() {
-  const { viewProduct } = useStore()
+  const { viewProduct, reducedMotion } = useStore()
 
   const scrollToPieces = () => {
     document.getElementById('shop-pieces')?.scrollIntoView({ behavior: 'smooth' })
   }
+
+  // Staggers each bubble's own fade-up as the grid scrolls into view,
+  // rather than one Reveal around the whole grid — a wrapping div per
+  // bubble would stop being a direct grid child, breaking the wide Sets
+  // item's grid-column:1/-1 rule, which only applies to direct children.
+  const bubbleReveal = (delay: number) =>
+    reducedMotion
+      ? {}
+      : {
+          initial: { opacity: 0, y: 28 },
+          whileInView: { opacity: 1, y: 0 },
+          viewport: { once: true, margin: '-80px' },
+          transition: { duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] as const },
+        }
 
   return (
     <div className="relative overflow-hidden">
@@ -72,7 +86,8 @@ export function ClosetView() {
             once the client's new artwork is in. */}
         <div className="hc-grid-stage" aria-label="Category display">
           <div className="hc-grid">
-            <button
+            <motion.button
+              {...bubbleReveal(0)}
               onClick={() => viewProduct('corset')}
               data-cursor="hover"
               className="hc-grid-item"
@@ -90,9 +105,23 @@ export function ClosetView() {
                 className="hc-ai-bubble"
                 fetchPriority="high"
               />
-            </button>
+              <span
+                aria-hidden="true"
+                className="hc-heading-label"
+                style={
+                  {
+                    ['--hc-label-x' as string]: '73.5%',
+                    ['--hc-label-y' as string]: '47.9%',
+                    ['--hc-label-size' as string]: '9.05cqw',
+                  } as CSSProperties
+                }
+              >
+                Tops
+              </span>
+            </motion.button>
 
-            <button
+            <motion.button
+              {...bubbleReveal(0.08)}
               onClick={() => viewProduct('slip-dress')}
               data-cursor="hover"
               className="hc-grid-item"
@@ -103,6 +132,7 @@ export function ClosetView() {
                 src="/images/One Piece Fashion Sticker (no subtext).png"
                 alt="One Piece"
                 className="hc-ai-bubble"
+                style={{ transform: 'translateY(13.4px)' }}
                 fetchPriority="high"
               />
               <span
@@ -112,15 +142,16 @@ export function ClosetView() {
                   {
                     ['--hc-label-x' as string]: '71%',
                     ['--hc-label-y' as string]: '56.8%',
-                    ['--hc-label-size' as string]: '7.5cqw',
+                    ['--hc-label-size' as string]: '6.78cqw',
                   } as CSSProperties
                 }
               >
                 One Piece
               </span>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              {...bubbleReveal(0.16)}
               onClick={() => viewProduct('moto-jacket')}
               data-cursor="hover"
               className="hc-grid-item"
@@ -131,6 +162,7 @@ export function ClosetView() {
                 src="/images/Jackets_ Second Skin, Built to Armour (no subtext).png"
                 alt="Jackets"
                 className="hc-ai-bubble"
+                style={{ transform: 'translateY(1.7px)' }}
                 fetchPriority="high"
               />
               <span
@@ -140,22 +172,23 @@ export function ClosetView() {
                   {
                     ['--hc-label-x' as string]: '72.5%',
                     ['--hc-label-y' as string]: '57.4%',
-                    ['--hc-label-size' as string]: '7.8cqw',
+                    ['--hc-label-size' as string]: '6.78cqw',
                   } as CSSProperties
                 }
               >
                 Jackets
               </span>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              {...bubbleReveal(0.24)}
               onClick={() => viewProduct('leather-pants')}
               data-cursor="hover"
               className="hc-grid-item"
               style={
                 {
                   ['--hc-ai-mask' as string]: "url('/images/Fashion BOTTOMS Tag with Flared Cargo Pants (no subtext).png')",
-                  ['--hc-item-scale' as string]: 0.69,
+                  ['--hc-item-scale' as string]: 0.798,
                 } as CSSProperties
               }
             >
@@ -171,17 +204,18 @@ export function ClosetView() {
                 className="hc-heading-label"
                 style={
                   {
-                    ['--hc-label-x' as string]: '65%',
+                    ['--hc-label-x' as string]: '66%',
                     ['--hc-label-y' as string]: '50%',
-                    ['--hc-label-size' as string]: '9cqw',
+                    ['--hc-label-size' as string]: '8.5cqw',
                   } as CSSProperties
                 }
               >
                 Bottoms
               </span>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              {...bubbleReveal(0.32)}
               onClick={() => viewProduct('bodysuit')}
               data-cursor="hover"
               className="hc-grid-item hc-grid-item-wide"
@@ -201,13 +235,13 @@ export function ClosetView() {
                   {
                     ['--hc-label-x' as string]: '67.2%',
                     ['--hc-label-y' as string]: '57.3%',
-                    ['--hc-label-size' as string]: '9.5cqw',
+                    ['--hc-label-size' as string]: '6.78cqw',
                   } as CSSProperties
                 }
               >
                 Sets
               </span>
-            </button>
+            </motion.button>
           </div>
         </div>
       </section>

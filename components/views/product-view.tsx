@@ -17,7 +17,7 @@ export function ProductView() {
   if (!product) {
     return (
       <div className="mx-auto flex max-w-7xl flex-col items-center gap-4 px-5 py-32 text-center sm:px-8">
-        <p className="font-serif text-2xl text-silver">This piece has gone missing.</p>
+        <p className="font-serif text-2xl text-silver">This piece isn't available.</p>
         <button
           onClick={() => navigate('closet')}
           data-cursor="hover"
