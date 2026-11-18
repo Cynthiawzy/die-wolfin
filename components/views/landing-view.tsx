@@ -175,9 +175,9 @@ export function LandingView() {
           initial={{ opacity: 0, y: 14, letterSpacing: '0.2em' }}
           animate={{ opacity: 1, y: 0, letterSpacing: '0.35em' }}
           transition={{ duration: 1.2, delay: 0.8, ease: doorEase }}
-          className="mb-5 font-serif text-xl uppercase tracking-[0.35em] text-primary sm:text-2xl"
+          className="mb-5 font-serif text-xl tracking-[0.35em] text-primary sm:text-2xl"
         >
-          Die Wölfin
+          atelier.dollmoire
         </motion.p>
 
         <motion.h1
@@ -187,7 +187,7 @@ export function LandingView() {
           className="relative mx-auto"
           style={{ width: 'clamp(220px, 40vw, 460px)', height: 'clamp(220px, 40vw, 460px)' }}
         >
-          <span className="sr-only">Die Wölfin</span>
+          <span className="sr-only">atelier.dollmoire</span>
           <div aria-hidden className="h-full w-full">
             <OrnateCross3D
               className="h-full w-full"

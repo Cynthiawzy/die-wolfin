@@ -32,7 +32,7 @@ export function SiteNav() {
               aria-label="Return to the doors"
             >
               <span className="whitespace-nowrap font-serif text-base tracking-[0.06em] text-primary transition-colors group-hover:text-rose sm:text-lg sm:tracking-[0.12em]">
-                Die Wölfin
+                atelier.dollmoire
               </span>
             </button>
 
